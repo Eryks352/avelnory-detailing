@@ -53,25 +53,35 @@ vec3 env(vec3 d, vec3 P, float blur){
   vec3 col = vec3(0.003,0.0035,0.0048);
   /* miękkie panele na ścianach bocznych: rysują zaokrąglenie błotników */
   col += vec3(0.07,0.075,0.085) * smoothstep(0.0,0.22,d.y) * smoothstep(0.55,0.22,d.y) * smoothstep(0.35,0.95,abs(d.x)) * uIntro;
-  float strip = exp(-pow((d.y-0.05)/(0.005+blur*0.05),2.)) * smoothstep(-0.2,-0.8,d.z) * smoothstep(0.22,0.05,abs(d.x-0.3));
-  col += vec3(0.16,0.72,0.86) * strip * 0.55 * uIntro;
   if (d.y > 0.02){
     float t; vec2 c = ceil2(d, P, t);
     vec4 hc = hexCoords(c/(uMode > 0.5 ? 0.5 : 0.6));
     float e = .5 - hexDist(hc.xy);
     float aa = FW(e)*1.2 + blur*0.5 + 0.0015;
-    float w = 0.042;
-    float line = (1. - smoothstep(w - aa, w + aa, e)) * (w/(w + blur*0.5));
+    float w = 0.036;
+    /* rura LED: jasny rdzeń + halo (bloom) zamiast płaskiego konturu; rozmycie zachowuje energię */
+    float core = (1. - smoothstep(w - aa, w + aa, e)) * (w/(w + blur*0.5));
+    core *= 0.55 + 0.45*(1. - smoothstep(0., w, e));   /* jaśniejszy środek rury */
+    float halo = exp(-max(e - w, 0.)/(0.05 + blur*0.6)) * (0.16 + blur*0.5) + exp(-max(e - w, 0.)/0.012)*0.25*(1. - blur*2.);
+    /* każda rura ma trochę inną jasność i ciemniejsze złącza w narożach */
+    float ang = atan(hc.y, hc.x);
+    float seg = floor((ang + 3.14159 + 0.5236)/1.0472);
+    float tubeVar = 0.86 + 0.24*h1(hc.zw*1.37 + seg*7.1);
+    float corner = smoothstep(0.02, 0.07, abs(fract((ang + 3.14159)/1.0472) - 0.5)*0.6);
     vec2 bx = abs(c) - vec2(1.55, 2.1);
     float box = max(bx.x, bx.y);
-    float inside = 1. - smoothstep(-0.04, 0.04, box);
+    float inside = 1. - smoothstep(-0.04, 0.04 + blur, box);
+    /* spadek jasności ku krawędziom pola lamp */
+    float falloff = 0.55 + 0.45*smoothstep(0.2, -1.6, box);
     float on = lightOn(hc.zw);
     float fog = exp(-t*0.045);
     vec3 tube = vec3(0.88,0.94,1.0);
-    col += tube * line * inside * on * 7.0 * fog;
+    col += tube * (core*(0.6 + 0.4*corner) + halo) * tubeVar * falloff * inside * on * 10.0 * fog;
     float fr = abs(box - 0.13);
     float faa = FW(fr) + blur*0.5 + 0.002;
-    col += tube * (1.-smoothstep(0.024-faa,0.024+faa,fr)) * 5.0 * fog * sat(uIntro*1.4-0.6) * (0.024/(0.024+blur*0.5));
+    col += tube * ((1.-smoothstep(0.02-faa,0.02+faa,fr)) * (0.02/(0.02+blur*0.5)) + exp(-fr/(0.03+blur*0.6))*0.08) * 4.0 * fog * sat(uIntro*1.4-0.6);
+    /* poświata całego pola (rozpraszanie w lakierze) */
+    col += tube * (1. - smoothstep(-0.6, 1.4, box)) * 0.045 * on * fog;
     /* długi softbox wzdłuż auta, po lewej */
     float sb = (1. - smoothstep(0.16, 0.16 + 0.02 + blur*0.6, abs(c.x + 2.05))) * smoothstep(6.5, 5.5, abs(c.y + 1.));
     col += tube * sb * (uMode > 0.5 ? 2.2 : 1.1) * fog * sat(uIntro*2.-0.5);
@@ -133,7 +143,7 @@ void main(){
 
     /* płytka głębia ostrości: rozmycie rośnie z odległością od płaszczyzny ostrości */
     float focus = cmp ? 1.6 : 1.9;
-    float coc = cmp ? 0.0 : sat(abs(t - focus)/t * 0.55);
+    float coc = sat(abs(t - focus)/t * (cmp ? 0.25 : 0.55));
 
     float defect = 0.;
     if (cmp){
@@ -148,10 +158,10 @@ void main(){
     vec3 refl = env(r, P, coc*0.35);
     if (defect > 0.001){
       vec3 o1 = normalize(cross(r, vec3(0.,1.,0.)) + 1e-4), o2 = cross(r, o1);
-      float s = 0.045;
-      vec3 hz2 = env(normalize(r + o1*s), P, .3) + env(normalize(r - o1*s), P, .3)
-               + env(normalize(r + o2*s), P, .3) + env(normalize(r - o2*s), P, .3);
-      refl = mix(refl, hz2*0.22, defect*0.85);
+      float s = 0.11;
+      vec3 hz2 = env(normalize(r + o1*s), P, .7) + env(normalize(r - o1*s), P, .7)
+               + env(normalize(r + o2*s), P, .7) + env(normalize(r - o2*s), P, .7);
+      refl = mix(refl, hz2*0.2, defect*0.96);
     }
 
     float soft = envSoft(normalize(r + vec3(0., 0.12, 0.)), P);
@@ -175,16 +185,16 @@ void main(){
         float k = floor(rho);
         float ang = atan(dv.y, dv.x);
         float hk = h1(vec2(k, cell.x*13. + cell.y*7. + float(L)));
-        float arc = smoothstep(0.55, 0.98, sin(ang*2. + hk*6.283)) * step(0.55, hk);
+        float arc = smoothstep(0.55, 0.98, sin(ang*2. + hk*6.283)) * step(0.55, hk) * (0.25 + 0.75*fract(hk*13.7));
         float ln = 1. - smoothstep(0.0, 0.08 + FW(rho)*0.9, abs(fract(rho) - 0.5));
         sw += arc*ln;
       }
-      col += vec3(0.8,0.85,0.9) * glow * glow * sw * defect * 0.3;
+      col += vec3(0.8,0.85,0.9) * glow * glow * sw * defect * 0.14;
       vec2 wq = q*3.1; vec2 wc = floor(wq); vec2 wh = h2(wc+4.2);
       float wr = 0.16 + 0.12*wh.x;
       float wd = length(fract(wq) - (0.32 + 0.36*wh));
       float spot = step(0.6, wh.y) * (1. - smoothstep(0.0, 0.015 + FW(wd), abs(wd - wr)));
-      col += vec3(0.02) * spot * defect * (0.2 + soft);
+      col += vec3(0.03) * spot * defect * soft * 1.5;
     }
 
     /* krople wody na ceramice */
