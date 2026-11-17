@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="pl" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Strona z kalkulatorem wyceny dla studia detailingu | AVELNORY</title>
+<meta name="description" content="Strona dla studia detailingu z kalkulatorem wyceny: klient sam widzi widełki cen i wysyła zapytanie. Wdrożenie do 7 dni roboczych. Cena końcowa 2 490 zł.">
+<meta name="theme-color" content="#080B12">
+<meta name="color-scheme" content="dark">
+<!-- Blok SEO generuje tools-v2/build_seo.py: canonical, og:url i JSON-LD tylko dla faktycznie dostępnego adresu (zob. README-v2). -->
+<!-- SEO:START -->
+<meta name="robots" content="noindex">
+<!-- SEO:END -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:site_name" content="AVELNORY Studio">
+<meta property="og:title" content="Kalkulator wyceny dla studia detailingu — AVELNORY Studio">
+<meta property="og:description" content="Zobacz demo: auto, usługa, stan lakieru — i widełki cen w kilka sekund.">
+<meta property="og:image" content="assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="AVELNORY Studio — czarny lakier z odbiciem sześciokątnych lamp studia i hasłem o kalkulatorze wyceny">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/archivo-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/img/hero-poster.webp" as="image" type="image/webp" fetchpriority="high" media="(min-width: 721px)">
+<link rel="preload" href="assets/img/hero-poster-m.webp" as="image" type="image/webp" fetchpriority="high" media="(max-width: 720px)">
+<link rel="stylesheet" href="assets/styles.css">
+<script>(function(d){d.classList.replace('no-js','js');try{if(sessionStorage.getItem('av-pre')||matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('pre-skip')}catch(e){}})(document.documentElement);</script>
+<script defer src="assets/config.js"></script>
+<script defer src="assets/app.js"></script>
+<script defer src="assets/vendor/gsap.min.js"></script>
+<script defer src="assets/vendor/ScrollTrigger.min.js"></script>
+<script defer src="assets/vendor/lenis.min.js"></script>
+<script defer src="assets/paint.js"></script>
+<script defer src="assets/motion.js"></script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="mark" viewBox="0 0 32 32"><path fill="currentColor" d="M2 28h5.6L15 12.06V4h-1.8zM30 28h-5.6L17 12.06V4h1.8z"/><circle cx="16" cy="19.6" r="2.4" fill="#44E3F6"/></symbol>
+  <symbol id="arr" viewBox="0 0 18 18"><path d="M2 9h13M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+</svg>
+<div class="pre" id="pre" aria-hidden="true"><div class="pre__mark"><div class="pre__word">AVELNORY</div><div class="pre__bar"><span></span></div></div></div>
+<a class="skip" href="#main">Przejdź do treści</a>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#start" aria-label="AVELNORY Studio — początek strony"><svg aria-hidden="true"><use href="#mark"/></svg>AVELNORY <small>STUDIO</small></a>
+  <nav class="nav__links" aria-label="Sekcje strony">
+    <a href="#demo" data-nav="demo"><span>01</span>Demo</a>
+    <a href="#pakiety" data-nav="pakiety"><span>02</span>Ceny</a>
+    <a href="#proces" data-nav="proces"><span>03</span>7&nbsp;dni</a>
+    <a href="#faq" data-nav="faq"><span>04</span>FAQ</a>
+  </nav>
+  <p class="nav__where" id="where" aria-live="off"><b>00</b> Start</p>
+  <a class="btn btn--cyan nav__cta" href="#formularz" aria-label="Porozmawiajmy — formularz kontaktowy" data-magnetic><span class="cta-long">Porozmawiajmy</span><span class="cta-short" aria-hidden="true">Kontakt</span></a>
+  <button class="nav__menu" type="button" aria-expanded="false" aria-controls="menu" aria-label="Otwórz menu"><i></i></button>
+  <div class="nav__progress" aria-hidden="true"><span></span></div>
+</header>
+<div class="menu" id="menu" hidden>
+  <ol>
+    <li><a href="#demo"><span>01</span>Demo kalkulatora</a></li>
+    <li><a href="#pakiety"><span>02</span>Pakiety i&nbsp;ceny</a></li>
+    <li><a href="#proces"><span>03</span>7&nbsp;dni roboczych</a></li>
+    <li><a href="#faq"><span>04</span>Pytania</a></li>
+    <li><a href="#formularz"><span>05</span>Kontakt</a></li>
+  </ol>
+  <a class="link" href="mailto:kontakt@avelnory.com">kontakt@avelnory.com</a>
+</div>
+
+<main id="main">
+<section class="hero" id="start" data-section="Start" data-num="00">
+  <div class="hero__stage">
+    <div class="hero__poster" aria-hidden="true"></div>
+    <canvas class="hero__canvas" id="hero-canvas" aria-hidden="true"></canvas>
+    <div class="hero__shade" aria-hidden="true"></div>
+    <div class="hero__content">
+      <h1 class="display hero__title" id="hero-title"><span class="ln"><span>Klient widzi cenę,</span></span><span class="ln"><span>zanim zapyta</span></span><span class="ln"><span>konkurencję.</span></span></h1>
+      <div class="hero__row">
+        <p class="lead">Strona Twojego studia detailingu z&nbsp;kalkulatorem wyceny. Gotowa w&nbsp;7&nbsp;dni roboczych, cena końcowa 2&nbsp;490&nbsp;zł.</p>
+        <a class="btn" href="#demo" data-magnetic>Zobacz demo kalkulatora <svg class="arr" aria-hidden="true"><use href="#arr"/></svg></a>
+      </div>
+    </div>
+    <div class="hero__meta" aria-hidden="true">
+      <span class="label">Fig. 01 — lakier po ceramice pod lampami studia, render na żywo</span>
+      <span class="cue label"><i></i>Przewiń</span>
+    </div>
+  </div>
+</section>
+
+<section class="sec problem" id="problem" data-section="Problem" data-num="00" aria-labelledby="problem-title">
+  <p class="label" id="problem-title"><b>—</b> Znasz to z&nbsp;własnego telefonu</p>
+  <div class="ticker">
+    <p data-dir="-1"><time>22:47</time>Ile za ceramikę do&nbsp;Golfa?</p>
+    <p data-dir="1" class="o">A&nbsp;PPF na sam przód?</p>
+    <p data-dir="-1"><time>23:12</time>Ile kosztuje korekta?</p>
+    <p data-dir="1" class="o">Jest ktoś? Pisałem wczoraj.</p>
+  </div>
+  <div class="grid problem__after">
+    <p class="big" data-reveal>Wyceniasz ręcznie, wieczorem, za każdym razem od&nbsp;zera. <span>Część zapytań ginie w&nbsp;wiadomościach, a&nbsp;klient pyta dalej — i&nbsp;wybiera tego, kto odpisał pierwszy.</span></p>
+    <div class="side" data-reveal>
+      <p class="body">Kalkulator odpowiada od razu, według Twojego cennika. Ty dostajesz komplet danych, żeby wycenić dokładnie.</p>
+      <a class="link" href="#demo">Sprawdź, jak to działa <svg class="arr" width="18" height="18" aria-hidden="true"><use href="#arr"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<section class="sec mirror" id="lustro" data-section="Przed / po" data-num="00" aria-labelledby="mirror-title">
+  <div class="mirror__poster" aria-hidden="true"></div>
+  <canvas class="mirror__canvas" id="mirror-canvas" aria-hidden="true"></canvas>
+  <div class="mirror__head">
+    <p class="label"><b>—</b> Przed / po</p>
+    <h2 class="display h2" id="mirror-title">Z&nbsp;lakieru robisz lustro.</h2>
+    <p class="lead">Twoja strona powinna robić takie wrażenie jak Twoja robota.</p>
+  </div>
+  <label class="sr" for="mirror-range">Porównanie: przesuń, aby odsłonić lakier po korekcie</label>
+  <input class="mirror__range" id="mirror-range" type="range" min="4" max="96" value="50" step="1">
+  <div class="split" aria-hidden="true"><div class="split__knob"><svg viewBox="0 0 28 28"><path d="M10 8 4 14l6 6M18 8l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></div></div>
+  <div class="mirror__tags" aria-hidden="true"><span class="label">Przed — hologramy, zmatowienie</span><span class="label">Po — korekta i&nbsp;ceramika</span></div>
+  <p class="label mirror__cap" aria-hidden="true">Wizualizacja WebGL, nie zdjęcie realizacji</p>
+</section>
+
+<section class="sec" id="jak" data-section="Jak to działa" data-num="00" aria-labelledby="jak-title">
+  <div class="grid steps">
+    <div class="steps__aside">
+      <p class="label"><b>—</b> Jak to działa</p>
+      <h2 class="display h2" id="jak-title">Trzy kroki. Zero&nbsp;„ile&nbsp;za?”.</h2>
+      <div class="steps__big" aria-hidden="true"><span id="step-num">01</span></div>
+    </div>
+    <ol class="steps__list">
+      <li class="step" data-step="01">
+        <figure><picture><source type="image/avif" srcset="assets/img/car-medium-800.avif 800w, assets/img/car-medium-1600.avif 1600w" sizes="(max-width:720px) 100vw, 45vw"><img src="assets/img/car-medium-800.webp" srcset="assets/img/car-medium-800.webp 800w, assets/img/car-medium-1600.webp 1600w" sizes="(max-width:720px) 100vw, 45vw" width="1600" height="800" alt="Sylwetka średniego auta z boku w ciemnym studiu" loading="lazy" decoding="async" data-parallax></picture></figure>
+        <p class="label">01 / Klient wybiera</p>
+        <h3 class="h3">Auto, usługa, stan lakieru.</h3>
+        <p class="body">Bez dzwonienia, kiedy masz auto w&nbsp;komorze. Ceramika, PPF, korekta, pranie tapicerki — według Twojej listy usług.</p>
+      </li>
+      <li class="step" data-step="02">
+        <figure><picture><source type="image/avif" srcset="assets/img/macro-beads-800.avif 800w, assets/img/macro-beads-1600.avif 1600w" sizes="(max-width:720px) 100vw, 45vw"><img src="assets/img/macro-beads-800.webp" srcset="assets/img/macro-beads-800.webp 800w, assets/img/macro-beads-1600.webp 1600w" sizes="(max-width:720px) 100vw, 45vw" width="1600" height="1067" alt="Krople wody perlące się na czarnym lakierze po ceramice, w kroplach odbicie lamp" loading="lazy" decoding="async" data-parallax></picture></figure>
+        <p class="label">02 / Widzi widełki</p>
+        <h3 class="h3">Cena od–do w&nbsp;kilka sekund.</h3>
+        <p class="body">Kalkulator liczy według Twojego cennika. Dokładną kwotę podajesz Ty, po obejrzeniu auta lub zdjęć.</p>
+      </li>
+      <li class="step" data-step="03">
+        <figure><picture><source type="image/avif" srcset="assets/img/studio-hex-800.avif 800w, assets/img/studio-hex-1600.avif 1600w" sizes="(max-width:720px) 100vw, 45vw"><img src="assets/img/studio-hex-800.webp" srcset="assets/img/studio-hex-800.webp 800w, assets/img/studio-hex-1600.webp 1600w" sizes="(max-width:720px) 100vw, 45vw" width="1600" height="900" alt="Puste studio detailingu nocą: sześciokątne lampy odbite w mokrej posadzce i w lakierze" loading="lazy" decoding="async" data-parallax></picture></figure>
+        <p class="label">03 / Wysyła zapytanie</p>
+        <h3 class="h3">Komplet danych na Twój e‑mail.</h3>
+        <p class="body">Dane klienta i&nbsp;wynik kalkulatora w&nbsp;jednej wiadomości. Klient od razu widzi potwierdzenie, a&nbsp;Ty masz wszystko, żeby odpisać.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec demo" id="demo" data-section="Demo" data-num="01" aria-labelledby="demo-title">
+  <div class="head">
+    <p class="label"><b>01</b> Demo / przykładowe studio</p>
+    <h2 class="display h2" id="demo-title">Wypróbuj na przykładowym studiu.</h2>
+    <p class="fine">To <strong>przykład</strong>: nazwa studia, usługi i&nbsp;ceny są wymyślone na potrzeby pokazu. U&nbsp;Ciebie kalkulator liczy według Twojego cennika. To nie jest zamówienie usługi detailingu.</p>
+  </div>
+  <form class="grid cfg" id="calculator" novalidate>
+    <div class="cfg__choices">
+      <fieldset>
+        <legend><span class="label">01</span>Jakie to auto?</legend>
+        <div class="cars" id="cars"></div>
+      </fieldset>
+      <fieldset>
+        <legend><span class="label">02</span>Co chcesz zrobić?</legend>
+        <div class="svc">
+          <div class="svc__groups" id="services"></div>
+          <figure class="svc__fig" id="svc-fig" aria-hidden="true"></figure>
+        </div>
+      </fieldset>
+      <fieldset id="cond-set">
+        <legend><span class="label">03</span>W&nbsp;jakim stanie jest lakier?</legend>
+        <div class="conds" id="conditions"></div>
+        <p id="condition-note" class="fine cond-note"></p>
+      </fieldset>
+      <button type="submit" class="sr">Pokaż widełki cen</button>
+    </div>
+    <aside class="cfg__result" aria-labelledby="res-title">
+      <div class="res">
+        <div class="res__pic" id="res-pic" aria-hidden="true"></div>
+        <p class="label" id="res-title">Twoja przykładowa wycena</p>
+        <p class="res__what" id="res-what"></p>
+        <p class="res__price"><small>Orientacyjnie</small><span id="res-price">—</span><span class="cur">zł</span></p>
+        <div class="hours">
+          <div class="hours__bar" aria-hidden="true"><span class="hours__max"></span><span class="hours__min"></span></div>
+          <p class="hours__txt"><span id="res-hours">—</span><span id="res-days"></span></p>
+        </div>
+        <div id="estimate" class="sr" aria-live="polite" aria-atomic="true"></div>
+        <p class="fine">Widełki orientacyjne. Dokładną cenę podaje studio po obejrzeniu auta lub zdjęć. Czas dotyczy pracy; schnięcie i&nbsp;terminy ustala studio.</p>
+        <button id="transfer" class="btn btn--cyan" type="button">Wyślij zapytanie z&nbsp;tą wyceną <svg class="arr" aria-hidden="true"><use href="#arr"/></svg></button>
+        <div class="res__more"><p class="fine">W&nbsp;demo zapytanie trafia do AVELNORY — w&nbsp;sprawie wdrożenia kalkulatora.</p><a class="link" href="#formularz">Chcę taki kalkulator</a></div>
+      </div>
+    </aside>
+  </form>
+  <div class="dock" id="dock" aria-hidden="true"><p class="dock__p"><small>Orientacyjnie</small><span id="dock-price">—</span></p><a class="btn btn--cyan" href="#formularz" tabindex="-1" id="dock-btn">Wyślij</a></div>
+</section>
+
+<section class="sec" id="pakiety" data-section="Ceny" data-num="02" aria-labelledby="pk-title">
+  <div class="head">
+    <p class="label"><b>02</b> Pakiety i&nbsp;ceny</p>
+    <h2 class="display h2" id="pk-title">Jasny zakres. Ceny końcowe.</h2>
+    <p class="body">Strona jest Twoja — dostajesz kopię plików. Bez umowy na czas określony.</p>
+  </div>
+  <article class="grid pk pk--start" aria-labelledby="pk-start">
+    <div class="pk__name"><p class="label">Jednorazowo</p><h3 class="h3" id="pk-start">START</h3></div>
+    <p class="pk__price" data-reveal><span class="num-roll">2&nbsp;490</span><small>zł</small></p>
+    <div class="pk__body">
+      <p class="body">Strona z&nbsp;wyceną online i&nbsp;uporządkowany Profil Firmy w&nbsp;Google.</p>
+      <ul>
+        <li>One-page: usługi, galeria, kontakt i&nbsp;mapa</li>
+        <li>Kalkulator według Twojego cennika — do 8&nbsp;usług, 4&nbsp;klasy aut, 3&nbsp;stany lakieru</li>
+        <li>Formularz i&nbsp;potwierdzenie na ekranie; odpowiedź e‑mailem w&nbsp;1&nbsp;dzień roboczy</li>
+        <li>5&nbsp;szablonów odpowiedzi do klientów</li>
+        <li>Uporządkowanie Profilu Firmy w&nbsp;Google</li>
+        <li>Hosting przez 12&nbsp;miesięcy</li>
+        <li>2&nbsp;rundy poprawek + mała runda do 14&nbsp;dni po publikacji</li>
+        <li>15-minutowe wideo-szkolenie</li>
+      </ul>
+      <a class="btn" href="#formularz" data-package="START" data-magnetic>Wybieram START <svg class="arr" aria-hidden="true"><use href="#arr"/></svg></a>
+    </div>
+  </article>
+  <article class="grid pk" aria-labelledby="pk-care">
+    <div class="pk__name"><p class="label">Opcjonalnie, po wdrożeniu</p><h3 class="h3" id="pk-care">Opieka</h3></div>
+    <p class="pk__price" data-reveal>249<small>zł / mies.</small></p>
+    <div class="pk__body">
+      <p class="body">Ktoś pilnuje Profilu Google i&nbsp;cennika, kiedy Ty pracujesz.</p>
+      <ul>
+        <li>2&nbsp;wpisy w&nbsp;Profilu Google z&nbsp;Twoich materiałów</li>
+        <li>Odpowiedzi na opinie — do 10&nbsp;miesięcznie</li>
+        <li>Aktualizacja cennika raz w&nbsp;miesiącu</li>
+        <li>Hosting strony w&nbsp;cenie</li>
+        <li>Miesięczny raport zapytań</li>
+      </ul>
+      <p class="fine">Bez umowy terminowej. Wypowiedzenie na koniec dowolnego miesiąca, mailem.</p>
+      <a class="btn btn--ghost" href="#formularz" data-package="START + Opieka">Dodaję Opiekę <svg class="arr" aria-hidden="true"><use href="#arr"/></svg></a>
+    </div>
+  </article>
+  <article class="grid pk pk--founder" aria-labelledby="pk-founder">
+    <div class="pk__name"><p class="label">Pierwsze 3&nbsp;studia</p><h3 class="h3" id="pk-founder">Oferta założycielska</h3></div>
+    <p class="pk__price" data-reveal>1&nbsp;990<small>zł</small></p>
+    <div class="pk__body">
+      <p class="body">Ten sam zakres co START. W&nbsp;zamian: zgoda na opisanie wdrożenia jako przykładu i&nbsp;Twoja szczera opinia po 30&nbsp;dniach. Dostępność potwierdzimy w&nbsp;rozmowie.</p>
+      <a class="btn btn--cyan" href="#formularz" data-package="Oferta założycielska">Chcę ofertę założycielską <svg class="arr" aria-hidden="true"><use href="#arr"/></svg></a>
+    </div>
+  </article>
+  <div class="pk-note"><p class="fine">Zakres bez kalendarza rezerwacji, płatności online, CRM, sklepu, reklam i&nbsp;prowadzenia social mediów. Zdjęcia i&nbsp;logo dostarczasz Ty. Opcjonalne zdjęcie w&nbsp;formularzu klienta zależy od wybranego odbiornika.</p></div>
+</section>
+
+<section class="sec proc" id="proces" data-section="7 dni" data-num="03" aria-labelledby="proc-title">
+  <div class="head">
+    <p class="label"><b>03</b> Od briefu do publikacji</p>
+    <h2 class="display h2" id="proc-title">Gotowe w&nbsp;7&nbsp;dni roboczych.</h2>
+    <p class="body">Liczymy od zaliczki 500&nbsp;zł i&nbsp;kompletu materiałów. Wcześniej: rozmowa 15&nbsp;minut i&nbsp;wycena. Całość online — wideo lub telefon, e‑mail, przelew.</p>
+  </div>
+  <div class="proc__wrap"><span class="proc__line" aria-hidden="true"></span>
+  <ol class="proc__track" id="track">
+    <li class="day"><span class="day__n">Dzień</span><span class="day__big">1</span><p>Materiały, zakres usług i&nbsp;klasy aut.</p></li>
+    <li class="day"><span class="day__n">Dzień</span><span class="day__big">2</span><p>Kalkulator według Twojego cennika, teksty i&nbsp;galeria.</p></li>
+    <li class="day"><span class="day__n">Dzień</span><span class="day__big">3</span><p>Formularz, potwierdzenia, audyt Profilu Google.</p><p class="you">Ty: zaproszenie do Profilu, bez hasła</p></li>
+    <li class="day"><span class="day__n">Dzień</span><span class="day__big">4</span><p>Podgląd strony i&nbsp;5&nbsp;szablonów odpowiedzi.</p><p class="you">Ty: oglądasz na telefonie i&nbsp;komputerze</p></li>
+    <li class="day"><span class="day__n">Dzień</span><span class="day__big">5</span><p>Pierwsza runda poprawek, Profil Google.</p><p class="you">Ty: jedna zbiorcza lista uwag</p></li>
+    <li class="day"><span class="day__n">Dzień</span><span class="day__big">6</span><p>Druga runda, test końcowy, akceptacja.</p><p class="you">Ty: akceptacja i&nbsp;płatność reszty</p></li>
+    <li class="day"><span class="day__n">Dzień</span><span class="day__big">7</span><p>Publikacja, szkolenie i&nbsp;próbne zapytanie.</p></li>
+  </ol>
+  </div>
+  <div class="proc__foot"><p class="fine">Jeśli materiały lub odpowiedzi dojdą później, termin przesuwa się o&nbsp;tyle samo dni.</p><a class="link" href="#formularz">Zacznijmy od rozmowy <svg class="arr" width="18" height="18" aria-hidden="true"><use href="#arr"/></svg></a></div>
+</section>
+
+<section class="sec" id="faq" data-section="FAQ" data-num="04" aria-labelledby="faq-title">
+  <div class="grid faq">
+    <div class="faq__head">
+      <p class="label"><b>04</b> Zanim zapytasz</p>
+      <h2 class="display h2" id="faq-title">Dobre pytania. Proste odpowiedzi.</h2>
+    </div>
+    <div class="faq__list">
+      <details class="qa"><summary>Czym to się różni od programu do rezerwacji?<i aria-hidden="true"></i></summary><div class="qa__a"><p>Robimy stronę z&nbsp;kalkulatorem wyceny i&nbsp;porządkujemy Profil Google. Nie prowadzimy kalendarza ani rozliczeń. Strona może działać obok programu, którego już używasz.</p></div></details>
+      <details class="qa"><summary>Czy wycena z&nbsp;kalkulatora jest wiążąca?<i aria-hidden="true"></i></summary><div class="qa__a"><p>Nie. To widełki od–do według Twojego cennika. Dokładną cenę ustalasz Ty, po obejrzeniu auta lub zdjęć.</p></div></details>
+      <details class="qa"><summary>Co muszę dostarczyć?<i aria-hidden="true"></i></summary><div class="qa__a"><p>Cennik, dane studia, własne zdjęcia realizacji, logo jeśli masz, linki do Instagrama i&nbsp;Profilu Google. Pełną listę dostajesz w&nbsp;briefie po zaliczce.</p></div></details>
+      <details class="qa"><summary>Ile to kosztuje? Są ukryte opłaty?<i aria-hidden="true"></i></summary><div class="qa__a"><p>START kosztuje 2&nbsp;490&nbsp;zł jednorazowo, to cena końcowa. Zaliczka 500&nbsp;zł, reszta po Twojej akceptacji, przed publikacją. Hosting przez 12&nbsp;miesięcy w&nbsp;cenie. Koszt kolejnego okresu bez Opieki oraz warunki rezygnacji ustalamy przed zamówieniem.</p></div></details>
+      <details class="qa"><summary>Czy muszę brać Opiekę?<i aria-hidden="true"></i></summary><div class="qa__a"><p>Nie. START działa sam. Opieka za 249&nbsp;zł miesięcznie jest dodatkowa.</p></div></details>
+      <details class="qa"><summary>Co z&nbsp;danymi i&nbsp;zapytaniami?<i aria-hidden="true"></i></summary><div class="qa__a"><p>Formularz ma zgodę i&nbsp;politykę prywatności. Odbiornik i&nbsp;docelową klauzulę ustalamy przed uruchomieniem. Wersja demonstracyjna bez odbiornika zapisuje zgłoszenie na tym urządzeniu.</p></div></details>
+      <details class="qa"><summary>Ile mojego czasu zajmie wdrożenie?<i aria-hidden="true"></i></summary><div class="qa__a"><p>Zwykle około 2–3&nbsp;godzin łącznie: rozmowa, brief, zebranie materiałów i&nbsp;dwa przeglądy strony. To orientacyjny nakład, zależny od gotowości materiałów.</p></div></details>
+      <details class="qa"><summary>Co ze zmianami po wdrożeniu?<i aria-hidden="true"></i></summary><div class="qa__a"><p>Do 14&nbsp;dni po publikacji mała runda poprawek jest w&nbsp;cenie. Późniejsze zmiany wyceniamy z&nbsp;góry; w&nbsp;Opiece jedna aktualizacja cennika miesięcznie jest w&nbsp;cenie. Dostajesz kopię plików strony.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<section class="sec contact" id="formularz" data-section="Kontakt" data-num="05" aria-labelledby="contact-title">
+  <div class="contact__bg" aria-hidden="true"><picture><source type="image/avif" srcset="assets/img/studio-hex-1600.avif"><img src="assets/img/studio-hex-1600.webp" width="1600" height="900" alt="" loading="lazy" decoding="async"></picture></div>
+  <div class="grid">
+    <div class="contact__intro">
+      <p class="label"><b>05</b> Porozmawiajmy o&nbsp;Twoim studiu</p>
+      <h2 class="display h2" id="contact-title">Chcę taki kalkulator u&nbsp;siebie.</h2>
+      <p class="body">Odpiszemy w&nbsp;ciągu 1&nbsp;dnia roboczego, żeby umówić rozmowę 15&nbsp;minut — wideo lub telefon. Zapytanie nic nie kosztuje i&nbsp;do niczego nie zobowiązuje.</p>
+      <a class="mail link" href="mailto:kontakt@avelnory.com">kontakt@avelnory.com</a>
+      <p class="fine">Pracujemy zdalnie ze studiami z&nbsp;południa Polski — m.in. Rzeszów, Wrocław, Kraków, Katowice, Oława, Opole, Tarnów, Dębica.</p>
+      <p class="fine">Wersja przed publikacją: odbiornik formularza i&nbsp;pełne dane administratora wymagają konfiguracji właściciela.</p>
+    </div>
+    <div class="contact__form">
+      <form id="lead-form" novalidate>
+        <p class="fine">Pola oznaczone * są wymagane. Nie podawaj danych wrażliwych.</p>
+        <div class="fields">
+          <label class="f"><span>Nazwa studia *</span><input name="nazwa_studia" required maxlength="150" autocomplete="organization" placeholder="np. Studio Detailingu Kowalski"></label>
+          <label class="f"><span>Twoje imię *</span><input name="imie" required maxlength="80" autocomplete="given-name"></label>
+          <label class="f"><span>E‑mail *</span><input name="email" type="email" required maxlength="180" autocomplete="email" placeholder="biuro@twojestudio.pl"></label>
+          <label class="f"><span>Telefon *</span><input name="telefon" type="tel" required pattern="[+0-9 \(\)\-]{7,25}" title="Wpisz 7–25 znaków: cyfry, +, spacje, nawiasy lub myślniki." autocomplete="tel"></label>
+          <label class="f"><span>Miasto *</span><input name="miasto" required maxlength="100" autocomplete="address-level2"></label>
+          <label class="f"><span>Strona lub Instagram</span><input name="link" type="url" placeholder="https://…" maxlength="500"></label>
+          <label class="f f--full"><span>Który pakiet Cię interesuje? *</span><select name="pakiet" required><option value="">Wybierz pakiet</option><option value="START">START — 2&nbsp;490&nbsp;zł</option><option value="START + Opieka">START + Opieka — 2&nbsp;490&nbsp;zł + 249&nbsp;zł / mies.</option><option value="Oferta założycielska">Oferta założycielska — 1&nbsp;990&nbsp;zł</option><option value="Jeszcze nie wiem">Jeszcze nie wiem</option></select></label>
+          <label class="f f--full"><span>Wiadomość</span><textarea name="wiadomosc" rows="4" maxlength="4000" placeholder="Jakie usługi robisz? Co dziś utrudnia Ci wyceny?"></textarea></label>
+        </div>
+        <input type="hidden" name="wycena_demo">
+        <p id="attached-estimate" class="attached"></p>
+        <div class="honeypot" aria-hidden="true"><label>Zostaw puste<input name="website_extra" tabindex="-1" autocomplete="off"></label></div>
+        <label class="consent"><input type="checkbox" name="zgoda" required><span>Zgadzam się na przetwarzanie danych w&nbsp;celu odpowiedzi na zapytanie przez AVELNORY Studio. Mogę wycofać zgodę przez kontakt@avelnory.com. <a href="privacy.html">Polityka prywatności i&nbsp;dane administratora</a>. *</span></label>
+        <div class="form-foot"><button class="btn btn--cyan" type="submit" id="submit" data-magnetic>Wyślij zgłoszenie <svg class="arr" aria-hidden="true"><use href="#arr"/></svg></button></div>
+      </form>
+      <section id="confirmation" tabindex="-1" hidden aria-live="polite">
+        <h3 class="h3" id="confirmation-title"></h3>
+        <p id="confirmation-text" class="body"></p>
+        <p class="fine">Numer zgłoszenia: <strong id="uid"></strong></p>
+        <div id="next-steps" hidden><p class="label">Co dalej</p><ol class="steps-next"><li><span class="num">01</span>Rozmowa 15&nbsp;minut</li><li><span class="num">02</span>Wycena e‑mailem</li><li><span class="num">03</span>Po zaliczce 500&nbsp;zł wdrożenie do 7&nbsp;dni roboczych</li></ol></div>
+        <div class="form-foot"><a id="fallback-email" class="btn btn--cyan" href="mailto:kontakt@avelnory.com" hidden>Otwórz gotowy e‑mail <svg class="arr" aria-hidden="true"><use href="#arr"/></svg></a><button id="new-request" class="textbtn" type="button">Nowe zgłoszenie</button></div>
+      </section>
+      <div id="queue-panel" hidden>
+        <p id="queue-status" class="fine" role="status"></p>
+        <ul id="queue-mails"></ul>
+        <div class="q-actions"><button type="button" id="retry" class="textbtn">Ponów wysyłkę</button><button type="button" id="export" class="textbtn">Pobierz zgłoszenia (JSON)</button><button type="button" id="clear" class="textbtn">Usuń lokalne zgłoszenia</button></div>
+      </div>
+      <p id="form-error" role="alert"></p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <p class="foot__word" aria-hidden="true">AVELNORY</p>
+  <div class="foot__row">
+    <div class="foot__links"><a class="link" href="mailto:kontakt@avelnory.com">kontakt@avelnory.com</a><a class="link" href="privacy.html">Polityka prywatności / RODO</a></div>
+    <p class="fine">Demo pokazuje przykładowe studio. Nazwa, usługi i&nbsp;ceny w&nbsp;demo są wymyślone. © AVELNORY Studio</p>
+  </div>
+</footer>
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+<noscript><p style="padding:24px">Włącz JavaScript, aby użyć kalkulatora i&nbsp;formularza. Możesz napisać na kontakt@avelnory.com.</p><style>.pre{display:none}.hero__canvas{display:none}</style></noscript>
+</body>
+</html>
