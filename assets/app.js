@@ -1,6 +1,7 @@
 /* AVELNORY v2 — kalkulator demo i formularz zgłoszeń.
    Logika formularza przeniesiona z v1 (walidacja, honeypot, UID, kolejka localStorage, mailto, blokada dubli, FORM_ENDPOINT).
-   Poprawki z raportu testów v1: F1 mailto zawsze w panelu kolejki, F2 TEST_MODE → testowe: 1, F3 jeden formatter liczb. */
+   Poprawki z raportu testów v1: F1 mailto zawsze w panelu kolejki, F2 TEST_MODE → testowe: 1, F3 jeden formatter liczb.
+   Testy v2 (BOSS): F6 spacja nierozdzielająca przed „zł”, F7 obrazy aut ładowane od razu (bez lazy). */
 (() => {
   'use strict';
   const cfg = window.AVELNORY_CONFIG;
@@ -42,7 +43,7 @@
   const carsBox = $('cars');
   Object.entries(cfg.cars).forEach(([k, c], i) => {
     const input = el('input', { type: 'radio', name: 'car', value: k, id: 'car-' + k });
-    const tile = el('span', { class: 'car' }, picture('car-' + k, CAR_ALT[k] || c.label, '(max-width:720px) 50vw, 28vw', 1600, 800), el('span', { class: 'car__name' }, el('span', { text: c.label }), el('span', { class: 'num', text: '×' + String(c.factor).replace('.', ',') })));
+    const tile = el('span', { class: 'car' }, picture('car-' + k, CAR_ALT[k] || c.label, '(max-width:720px) 50vw, 28vw', 1600, 800, true), el('span', { class: 'car__name' }, el('span', { text: c.label }), el('span', { class: 'num', text: '×' + String(c.factor).replace('.', ',') })));
     carsBox.append(el('label', { class: 'opt', for: 'car-' + k }, input, tile));
   });
 
@@ -54,9 +55,9 @@
     entries.forEach(([k, s]) => {
       const short = s.label.includes(' — ') ? s.label.split(' — ')[1] : s.label;
       const input = el('input', { type: 'radio', name: 'service', value: k, id: 'svc-' + k });
-      const row = el('span', { class: 'svc__row' }, el('span', { text: short.charAt(0).toUpperCase() + short.slice(1) }), el('span', { class: 'num', text: 'od ' + money(s.min) + ' zł' }));
+      const row = el('span', { class: 'svc__row' }, el('span', { text: short.charAt(0).toUpperCase() + short.slice(1) }), el('span', { class: 'num', text: 'od ' + money(s.min) + ' zł' }));
       const lab = el('label', { class: 'opt', for: 'svc-' + k }, input, row);
-      lab.setAttribute('aria-label', s.label + ', od ' + money(s.min) + ' zł');
+      lab.setAttribute('aria-label', s.label + ', od ' + money(s.min) + ' zł');
       wrap.append(lab);
     });
     svcBox.append(wrap);
@@ -73,7 +74,7 @@
 
   // Duży obraz wybranej klasy auta w panelu wyniku.
   const resPic = $('res-pic');
-  Object.keys(cfg.cars).forEach(k => { const p = picture('car-' + k, '', '(max-width:1100px) 90vw, 30vw', 1600, 800); p.dataset.car = k; resPic.append(p); });
+  Object.keys(cfg.cars).forEach(k => { const p = picture('car-' + k, '', '(max-width:1100px) 90vw, 30vw', 1600, 800, true); p.dataset.car = k; resPic.append(p); });
 
   calc.elements.car.value = 'medium'; calc.elements.service.value = 'ceramic3'; calc.elements.condition.value = 'normal';
 
@@ -84,7 +85,7 @@
   let shown = null, rollRaf = 0;
   function roll(from, to) {
     const out = $('res-price'), dock = $('dock-price');
-    const paint = (a, b) => { const t = `${money(a)}–${money(b)}`; out.textContent = t; dock.textContent = t + ' zł'; };
+    const paint = (a, b) => { const t = `${money(a)}–${money(b)}`; out.textContent = t; dock.textContent = t + ' zł'; };
     cancelAnimationFrame(rollRaf);
     if (!from || reduced) { paint(to[0], to[1]); return; }
     const t0 = performance.now(), D = 750;
@@ -103,7 +104,7 @@
     const low = Math.ceil(service.min * factor / 50) * 50, high = Math.ceil(service.max * factor / 50) * 50;
     const hours = service.hours.map(n => Math.ceil(n * factor));
     const condLabel = service.paint ? condition.label : 'stan lakieru nie dotyczy';
-    quote = `PRZYKŁAD: ${car.label}; ${service.label}; ${condLabel}; ${money(low)}–${money(high)} zł; ${hours[0]}–${hours[1]} h pracy.`;
+    quote = `PRZYKŁAD: ${car.label}; ${service.label}; ${condLabel}; ${money(low)}–${money(high)} zł; ${hours[0]}–${hours[1]} h pracy.`;
     $('cond-set').disabled = !service.paint;
     $('condition-note').textContent = service.paint ? 'Stan lakieru wpływa na przykładową cenę i czas.' : 'Dla wnętrza stan lakieru nie wpływa na cenę ani czas.';
     $('res-what').textContent = `Auto: ${car.label.toLowerCase().replace('suv', 'SUV')} · ${service.label}${service.paint ? ' · ' + condition.label.toLowerCase() : ''}`;
@@ -113,7 +114,7 @@
     $('res-days').textContent = d0 === d1 ? `≈ ${d0} ${d0 === 1 ? 'dzień' : 'dni'} po 8 h` : `≈ ${d0}–${d1} dni po 8 h`;
     const hb = document.querySelector('.hours');
     hb.style.setProperty('--hmin', (hours[0] / maxH).toFixed(4)); hb.style.setProperty('--hmax', (hours[1] / maxH).toFixed(4));
-    $('estimate').textContent = `${car.label} / ${service.label}: ${money(low)}–${money(high)} zł, ${hours[0]}–${hours[1]} godzin pracy.`;
+    $('estimate').textContent = `${car.label} / ${service.label}: ${money(low)}–${money(high)} zł, ${hours[0]}–${hours[1]} godzin pracy.`;
     resPic.querySelectorAll('img').forEach(i => i.classList.toggle('is-on', i.parentElement.dataset.car === ck));
     const g = groupOf(sk);
     fig.querySelectorAll('img').forEach(i => i.classList.toggle('is-on', i.parentElement.dataset.group === g));
@@ -184,7 +185,7 @@
   function queueUI() {
     const rows = queue();
     $('queue-panel').hidden = !rows.length;
-    $('queue-status').textContent = `Na tym urządzeniu: ${rows.length} ${rows.length === 1 ? 'niewysłane zgłoszenie' : 'niewysłanych zgłoszeń'}. Zapis wygasa po ${cfg.QUEUE_TTL_DAYS} dniach. Wyślij je e-mailem albo ponów wysyłkę — nic nie wychodzi automatycznie.`;
+    $('queue-status').textContent = `Na tym urządzeniu: ${rows.length} ${(n => n === 1 ? 'niewysłane zgłoszenie' : (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 'niewysłane zgłoszenia' : 'niewysłanych zgłoszeń')(rows.length)}. Zapis wygasa po ${cfg.QUEUE_TTL_DAYS} dniach. Wyślij je e-mailem albo ponów wysyłkę — nic nie wychodzi automatycznie.`;
     // F1: gotowy e-mail dla każdego rekordu w kolejce, także po odświeżeniu strony.
     const list = $('queue-mails'); list.replaceChildren();
     rows.forEach(r => list.append(el('li', {}, el('a', { href: emailLink(r), text: `Wyślij e-mailem: ${r.nazwa_studia} · ${r.zgloszenie_uid.slice(0, 8)}` }))));

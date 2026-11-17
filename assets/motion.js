@@ -42,7 +42,7 @@
     if (hasGsap && !reduced) gsap.from($$('li', menu), { yPercent: 40, opacity: 0, duration: .6, stagger: .05, ease: 'power3.out' });
     $('a', menu).focus();
   });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && menu && !menu.hidden) { closeMenu(); menuBtn?.focus(); } });
 
   /* ---------- nawigacja: tło, postęp, aktywna sekcja ---------- */
   const nav = $('#nav'), bar = $('.nav__progress span'), where = $('#where');
