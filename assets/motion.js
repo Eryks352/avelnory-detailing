@@ -68,12 +68,18 @@
   let hero = null, mirror = null;
   const heroCanvas = $('#hero-canvas'), mirrorCanvas = $('#mirror-canvas');
   const wipeIntro = !reduced && hasGsap;
-  try { hero = new AvelPaint(heroCanvas, { mode: 'hero', static: reduced, intro: reduced ? 1 : 0, defect: wipeIntro ? 1 : 0, maxDpr: mobile ? 1.5 : 1.25 }); }
-  catch (err) { root.classList.add('no-webgl'); heroCanvas.remove(); }
+  const canGL = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } })();
+  if (!canGL) { root.classList.add('no-webgl'); heroCanvas.remove(); } else root.classList.add('hero-3d-wait');
+  // Scena 3D (three.js, assets/hero3d.js) ładuje się po pierwszym malowaniu; do tego czasu w jej miejscu jest plakat-klatka.
+  const heroP = !canGL ? Promise.resolve(null) : new Promise(r => requestAnimationFrame(() => setTimeout(r, 0)))
+    .then(() => import('./hero3d.js'))
+    .then(m => { hero = m.createHero(heroCanvas, { static: reduced, intro: reduced ? 1 : 0, defect: wipeIntro ? 1 : 0, mobile }); bindHero(); return hero; })
+    .catch(() => { hero = null; root.classList.add('no-webgl'); heroCanvas.remove(); return null; })
+    .finally(() => root.classList.remove('hero-3d-wait'));
   try { mirror = new AvelPaint(mirrorCanvas, { mode: 'compare', static: true, intro: 1, maxDpr: mobile ? 1.5 : 1.25 }); }
   catch (err) { mirrorCanvas.remove(); }
 
-  if (hero) {
+  function bindHero() {
     hero.start();
     requestAnimationFrame(() => requestAnimationFrame(() => heroCanvas.classList.add('is-on')));
     const vis = new IntersectionObserver(([en]) => { if (reduced) return; en.isIntersecting ? hero.start() : hero.stop(); });
@@ -152,38 +158,46 @@
   /* ---------- preloader i wejście hero ---------- */
   const pre = $('#pre');
   const title = $$('.hero__title .ln > span'), heroRow = $('.hero__row'), heroMeta = $('.hero__meta');
-  function intro() {
+  // Jedno pociągnięcie polerki: ukośna granica przechodzi przez matowy lakier bryły, za nią lustro, krople i (przy starcie) nagłówek.
+  function polish(tl, h, withTitle) {
+    const W = { v: -0.06 }, lines = $$('.hero__title .ln');
+    const clipLines = () => {
+      if (!withTitle) return;
+      const w = innerWidth, hh = innerHeight;
+      lines.forEach(l => {
+        const r = l.getBoundingClientRect();
+        const edge = (W.v + 0.03 - ((1 - (r.top + r.height / 2) / hh) - 0.5) * 0.2) * w;
+        l.style.clipPath = `inset(-12% ${Math.max(0, r.right - edge).toFixed(1)}px -12% -4px)`;
+      });
+    };
+    clipLines(); root.classList.remove('hero-wipe');
+    tl.to(h.u, { intro: 1, duration: 2.2, ease: 'power2.out' }, 0)
+      .to(W, { v: 1.3, duration: 1.8, ease: 'power2.inOut', onUpdate: () => { h.u.wipe = W.v; clipLines(); },
+        onComplete: () => { h.u.defect = 0; if (withTitle) lines.forEach(l => l.style.clipPath = ''); } }, 0.1)
+      .to(h.u, { lampOn: 1, duration: 1.4, ease: 'power2.out' }, 1.7);
+    if (withTitle) tl.fromTo(title, { yPercent: 18, opacity: 0.4 }, { yPercent: 0, opacity: 1, duration: 1.6, stagger: .08 }, .15);
+  }
+  async function intro() {
     if (pre) pre.classList.add('is-done');
     try { sessionStorage.setItem('av-pre', '1'); } catch {}
-    if (!hasGsap || reduced) { root.classList.remove('hero-wipe'); if (hero) { hero.set('intro', 1); hero.set('defect', 0); } return; }
+    if (!hasGsap || reduced) { root.classList.remove('hero-wipe'); heroP.then(h => h && h.set('lampOn', 1)); return; }
+    // Czekamy na scenę 3D najwyżej 1,8 s; przy wolnym łączu nagłówek wchodzi sam, a polerka rusza, gdy scena dojedzie.
+    const h = await Promise.race([heroP, new Promise(r => setTimeout(() => r(null), 1800))]);
     const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
-    if (hero) {
-      // Jedno pociągnięcie polerki: ukośna granica przechodzi przez matowy lakier, za nią lustro, krople i nagłówek.
-      const W = { v: -0.06 }, lines = $$('.hero__title .ln');
-      const clipLines = () => {
-        const w = innerWidth, h = innerHeight;
-        lines.forEach(l => {
-          const r = l.getBoundingClientRect();
-          const edge = (W.v + 0.03 - ((1 - (r.top + r.height / 2) / h) - 0.5) * 0.2) * w;
-          l.style.clipPath = `inset(-12% ${Math.max(0, r.right - edge).toFixed(1)}px -12% -4px)`;
-        });
-      };
-      clipLines(); root.classList.remove('hero-wipe');
-      tl.to(hero.u, { intro: 1, duration: 2.2, ease: 'power2.out' }, 0)
-        .to(W, { v: 1.3, duration: 1.8, ease: 'power2.inOut', onUpdate: () => { hero.u.wipe = W.v; clipLines(); },
-          onComplete: () => { hero.u.defect = 0; lines.forEach(l => l.style.clipPath = ''); } }, 0.1)
-        .fromTo(title, { yPercent: 18, opacity: 0.4 }, { yPercent: 0, opacity: 1, duration: 1.6, stagger: .08 }, .15)
-        .to(hero.u, { lampOn: 1, duration: 1.4, ease: 'power2.out' }, 1.7);
-    } else { root.classList.remove('hero-wipe'); tl.fromTo(title, { yPercent: 108 }, { yPercent: 0, duration: 1.3, stagger: .09 }, .15); }
-    tl.fromTo(heroRow, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 1.1 }, hero ? 1.25 : .55)
-      .fromTo(heroMeta, { opacity: 0 }, { opacity: 1, duration: 1 }, hero ? 1.8 : .9)
+    if (h) polish(tl, h, true);
+    else {
+      root.classList.remove('hero-wipe'); tl.fromTo(title, { yPercent: 108 }, { yPercent: 0, duration: 1.3, stagger: .09 }, .15);
+      heroP.then(late => late && polish(gsap.timeline(), late, false));
+    }
+    tl.fromTo(heroRow, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 1.1 }, h ? 1.25 : .55)
+      .fromTo(heroMeta, { opacity: 0 }, { opacity: 1, duration: 1 }, h ? 1.8 : .9)
       .fromTo(nav, { yPercent: -100 }, { yPercent: 0, duration: 1 }, .4);
   }
   const skipPre = root.classList.contains('pre-skip') || reduced;
+  if (hasGsap && !reduced && canGL) root.classList.add('hero-wipe');
   if (skipPre) { if (pre) pre.remove(); intro(); }
   else {
-    if (hasGsap && !hero) gsap.set(title, { yPercent: 108 });
-    if (hasGsap && hero) root.classList.add('hero-wipe');
+    if (hasGsap && !canGL) gsap.set(title, { yPercent: 108 });
     const t0 = performance.now();
     const go = () => setTimeout(intro, Math.max(0, 650 - (performance.now() - t0)));
     if (document.fonts?.ready) Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 900))]).then(go); else go();

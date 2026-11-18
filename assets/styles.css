@@ -466,3 +466,7 @@ fieldset:disabled .opt{cursor:not-allowed}
 .hero__note{font-family:var(--sans);font-size:13px;color:var(--dim);max-width:44ch;text-align:right}
 @media (max-width:720px){.hero__meta>.hero__note{display:none}}
 .hero__lamp-tip{display:block}
+
+/* Runda 5 — hero 3D: do czasu wczytania sceny plakat przygaszony (studio jeszcze bez świateł) */
+.hero__poster{transition:filter .6s var(--ease)}
+.hero-3d-wait .hero__poster{filter:brightness(.4)}
