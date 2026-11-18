@@ -15,8 +15,8 @@
 #endif
 precision highp float;
 uniform vec2 uRes;
-uniform float uTime, uIntro, uScroll, uDrops, uDefect, uSplit, uMode, uSoft;
-uniform vec2 uMouse;
+uniform float uTime, uIntro, uScroll, uDrops, uDefect, uSplit, uMode, uSoft, uWipe, uLampOn;
+uniform vec2 uMouse, uLamp;
 
 float h1(vec2 p){ p = fract(p*vec2(123.34,456.21)); p += dot(p,p+45.32); return fract(p.x*p.y); }
 vec2 h2(vec2 p){ float n = h1(p); return vec2(n, h1(p+n*17.13)); }
@@ -32,6 +32,7 @@ vec4 hexCoords(vec2 uv){
 
 /* lampy zapalają się kolejno z krótkim migotaniem, jak świetlówki w studiu */
 float lightOn(vec2 id){
+  id = floor(id*4. + 0.5);   /* stały identyfikator komórki: bez szumu z błędu zaokrągleń */
   float hh = h1(id*0.731 + 3.1);
   float t = uIntro*1.7 - hh*0.85 - id.x*0.03;
   if (t <= 0.) return 0.;
@@ -113,33 +114,43 @@ float hood(vec2 q){
   return h;
 }
 
-vec3 aces(vec3 x){ return clamp((x*(2.51*x+0.03))/(x*(2.43*x+0.59)+0.14),0.,1.); }
-
-void main(){
-  vec2 fc = gl_FragCoord.xy;
+/* promień kamery dla piksela (wspólny dla obrazu i lampy inspekcyjnej) */
+vec3 camRay(vec2 fc, out vec3 ro){
   vec2 uv = (fc - 0.5*uRes) / uRes.y;
   float aspect = uRes.x/uRes.y;
   if (aspect < 1.) uv *= mix(1.0, 0.8, sat((1.-aspect)*2.));
-
   bool cmp = uMode > 0.5;
   float pitch = cmp ? 0.62 + uMouse.y*0.02 : 0.42 + uScroll*0.14 + uMouse.y*0.03;
   float yaw = uMouse.x*(cmp ? 0.03 : 0.06) + (cmp ? 0. : -0.04);
-  vec3 ro = vec3(0., cmp ? 0.9 : 0.75 - uScroll*0.1, 0.);
+  ro = vec3(0., cmp ? 0.9 : 0.75 - uScroll*0.1, 0.);
   vec3 rd = normalize(vec3(uv, cmp ? -1.7 : -2.0));
   float cp = cos(-pitch), spn = sin(-pitch);
   rd.yz = vec2(rd.y*cp - rd.z*spn, rd.y*spn + rd.z*cp);
   float cy = cos(yaw), sy = sin(yaw);
   rd.xz = vec2(rd.x*cy - rd.z*sy, rd.x*sy + rd.z*cy);
+  return rd;
+}
+vec3 hoodN(vec2 q){
+  float e = 0.003;
+  float hx = (hood(q+vec2(e,0.)) - hood(q-vec2(e,0.)))/(2.*e);
+  float hz = (hood(q+vec2(0.,e)) - hood(q-vec2(0.,e)))/(2.*e);
+  return normalize(vec3(-hx, 1., -hz));
+}
+
+vec3 aces(vec3 x){ return clamp((x*(2.51*x+0.03))/(x*(2.43*x+0.59)+0.14),0.,1.); }
+
+void main(){
+  vec2 fc = gl_FragCoord.xy;
+  bool cmp = uMode > 0.5;
+  vec3 ro; vec3 rd = camRay(fc, ro);
+  float wipeS = fc.x/uRes.x + (fc.y/uRes.y - 0.5)*0.2;
 
   vec3 col = vec3(0.);
   if (rd.y < -0.001){
     float t = -ro.y/rd.y;
     vec3 P = ro + rd*t;
     vec2 q = P.xz;
-    float e = 0.003;
-    float hx = (hood(q+vec2(e,0.)) - hood(q-vec2(e,0.)))/(2.*e);
-    float hz = (hood(q+vec2(0.,e)) - hood(q-vec2(0.,e)))/(2.*e);
-    vec3 n = normalize(vec3(-hx, 1., -hz));
+    vec3 n = hoodN(q);
 
     /* płytka głębia ostrości: rozmycie rośnie z odległością od płaszczyzny ostrości */
     float focus = cmp ? 1.6 : 1.9;
@@ -149,6 +160,9 @@ void main(){
     if (cmp){
       float sx = uSplit*uRes.x;
       defect = uDefect * (1. - smoothstep(sx - 1.0, sx + 1.0, fc.x));
+    } else if (uDefect > 0.001){
+      /* intro: lakier jest zmatowiony, przejście polerki odsłania lustro (ukośna granica) */
+      defect = uDefect * smoothstep(uWipe - 0.01, uWipe + 0.09, wipeS);
     }
 
     vec3 r = reflect(rd, n);
@@ -164,14 +178,33 @@ void main(){
       refl = mix(refl, hz2*0.2, defect*0.96);
     }
 
+    /* lampa inspekcyjna za kursorem: punkt światła odbity w lakierze, kształt zgodny z krzywizną maski */
+    vec3 toL = vec3(0., 1., 0.); float lampD = 0.;
+    if (!cmp && uLampOn > 0.001){
+      vec3 lro; vec3 lrd = camRay(uLamp*uRes, lro);
+      if (lrd.y < -0.001){
+        vec3 LP = lro + lrd*(-lro.y/lrd.y);
+        vec3 Lpos = LP + reflect(lrd, hoodN(LP.xz))*0.9;
+        toL = normalize(Lpos - P);
+        lampD = sat(dot(r, toL));
+      }
+    }
     float soft = envSoft(normalize(r + vec3(0., 0.12, 0.)), P);
     vec3 base = vec3(0.0025,0.0028,0.0036) + vec3(0.045,0.05,0.062)*soft*uIntro;
     vec2 fcell = floor(q*520.);
     float sparkle = step(0.994, h1(fcell)) * soft * (1. - coc) * 0.5 * (1. - uMode);
     base += vec3(0.85,0.9,1.0) * sparkle * uIntro * (1. - defect*0.7);
+    /* drobinki metaliku błyszczą tylko w stożku lampy */
+    float sheen = pow(lampD, 160.) * uLampOn;
+    base += vec3(1.,0.95,0.88) * step(0.992, h1(fcell + 3.7)) * sheen * (1. - coc) * 0.55;
     base += defect * vec3(0.012,0.012,0.013);
 
     col = base*(1.-F) + refl*F;
+    if (uLampOn > 0.001){
+      float ex = mix(2600., 90., defect);
+      float spot = pow(lampD, ex) * mix(2.2, 0.8, defect) + pow(lampD, ex*0.3) * 0.06 + sheen * 0.01;
+      col += vec3(1.,0.96,0.9) * spot * uLampOn;
+    }
 
     if (defect > 0.001){
       float glow = envSoft(r, P) + envSoft(normalize(r + vec3(0.06,0.04,0.)), P);
@@ -206,7 +239,7 @@ void main(){
         vec2 cell = floor(dq);
         vec2 f = fract(dq);
         vec2 hh = h2(cell + float(L)*31.7);
-        float dens = (L == 0 ? 0.13 : 0.0) * uDrops * (1. - uScroll*0.75) * smoothstep(L == 0 ? 4.0 : 2.6, L == 0 ? 2.0 : 1.4, t);
+        float dens = (L == 0 ? 0.13 : 0.0) * uDrops * (1. - uScroll*0.75) * (1. - defect) * smoothstep(L == 0 ? 4.0 : 2.6, L == 0 ? 2.0 : 1.4, t);
         if (hh.x < dens){
           float rr = mix(0.14, 0.32, pow(h1(cell*1.7 + float(L)), 1.5));
           rr *= 1. - uScroll*0.35;
@@ -222,7 +255,7 @@ void main(){
             vec3 dr = env(reflect(rd, nd), P, coc*0.3);
             /* odblask od pola lamp + jasny półksiężyc na przeciwnej stronie (soczewka) */
             vec3 Ld = normalize(vec3(0.35, 1., -0.9));
-            float glint = pow(sat(dot(reflect(rd, nd), Ld)), 220.) * 1.6;
+            float glint = pow(sat(dot(reflect(rd, nd), Ld)), 220.) * 1.6 + pow(sat(dot(reflect(rd, nd), toL)), 500.) * 3. * uLampOn;
             float crescent = smoothstep(0.55, 0.95, d) * smoothstep(0.2, 0.9, dot(normalize(o + 1e-4), normalize(vec2(-0.35, 0.9)))) ;
             vec3 dc = dr*Fd*1.6 + vec3(0.85,0.92,1.)*(glint + crescent*0.12*uIntro);
             dc *= mix(1., 0.2, smoothstep(0.8, 1.0, d));
@@ -233,6 +266,8 @@ void main(){
       }
     }
 
+    /* krawędź polerowania: wąskie pasmo jaśniejszej mgiełki pasty, widoczne tylko tam, gdzie pada światło */
+    if (!cmp && uDefect > 0.001) col += vec3(0.75,0.8,0.88) * exp(-abs(wipeS - uWipe - 0.04)*55.) * (soft*0.06 + 0.004) * uDefect;
     col *= smoothstep(12., 3.5, t);
   }
 
@@ -260,7 +295,8 @@ void main(){
       this.static = !!opts.static;
       this.maxDpr = opts.maxDpr || 1.5;
       this.scale = 1;
-      this.u = { intro: opts.intro ?? 0, scroll: 0, drops: this.mode ? 0 : 1, defect: this.mode ? 1 : 0, split: 0.5, soft: 1 };
+      this.u = { intro: opts.intro ?? 0, scroll: 0, drops: this.mode ? 0 : 1, defect: this.mode ? 1 : (opts.defect ?? 0), split: 0.5, soft: 1, wipe: opts.defect ? -0.2 : 1.3, lampOn: 0 };
+      this.lamp = [0.7, 0.5]; this.lampT = [0.7, 0.5];
       this.mouse = [0, 0]; this.mouseT = [0, 0];
       this.visible = true; this.running = false; this.t0 = performance.now(); this.timeOffset = opts.timeOffset || 0;
       const attrs = { antialias: false, alpha: false, depth: false, stencil: false, powerPreference: 'high-performance', preserveDrawingBuffer: !!opts.preserve };
@@ -280,7 +316,7 @@ void main(){
       const loc = gl.getAttribLocation(prog, 'p');
       gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
       this.loc = {};
-      for (const n of ['uRes', 'uTime', 'uIntro', 'uScroll', 'uDrops', 'uDefect', 'uSplit', 'uMode', 'uMouse', 'uSoft']) this.loc[n] = gl.getUniformLocation(prog, n);
+      for (const n of ['uRes', 'uTime', 'uIntro', 'uScroll', 'uDrops', 'uDefect', 'uSplit', 'uMode', 'uMouse', 'uSoft', 'uWipe', 'uLampOn', 'uLamp']) this.loc[n] = gl.getUniformLocation(prog, n);
       this.frameTimes = [];
       this.resize();
       this._onResize = () => this.resize();
@@ -296,12 +332,16 @@ void main(){
       if (!this.running) this.render();
     }
     setMouse(x, y) { this.mouseT = [x, y]; }
+    setLamp(x, y) { this.lampT = [x, y]; }
     set(key, v) { this.u[key] = v; if (!this.running) this.render(); }
     render(now = performance.now()) {
       const gl = this.gl, L = this.loc, u = this.u;
       const k = this.static ? 1 : 0.06;
       this.mouse[0] += (this.mouseT[0] - this.mouse[0]) * k;
       this.mouse[1] += (this.mouseT[1] - this.mouse[1]) * k;
+      const kl = this.static ? 1 : 0.14;
+      this.lamp[0] += (this.lampT[0] - this.lamp[0]) * kl;
+      this.lamp[1] += (this.lampT[1] - this.lamp[1]) * kl;
       const time = this.static ? this.timeOffset : (now - this.t0) / 1000 + this.timeOffset;
       gl.uniform2f(L.uRes, this.canvas.width, this.canvas.height);
       gl.uniform1f(L.uTime, time);
@@ -309,6 +349,8 @@ void main(){
       gl.uniform1f(L.uDrops, u.drops); gl.uniform1f(L.uDefect, u.defect);
       gl.uniform1f(L.uSplit, u.split); gl.uniform1f(L.uMode, this.mode);
       gl.uniform1f(L.uSoft, u.soft);
+      gl.uniform1f(L.uWipe, u.wipe); gl.uniform1f(L.uLampOn, u.lampOn);
+      gl.uniform2f(L.uLamp, this.lamp[0], this.lamp[1]);
       gl.uniform2f(L.uMouse, this.mouse[0], this.mouse[1]);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     }
