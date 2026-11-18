@@ -4,7 +4,7 @@ window.AVELNORY_CONFIG = {
   FORM_PROVIDER: 'formspree', // formspree | web3forms | generic
   FORM_FORMAT: 'json', // json | formdata
   WEB3FORMS_ACCESS_KEY: '', // publiczny klucz formularza, nigdy klucz prywatnego API
-  CONTACT_EMAIL: 'kontakt@avelnory.com',
+  CONTACT_EMAIL: 'avelnory.studio@gmail.com',
   REQUEST_TIMEOUT_MS: 12000,
   QUEUE_TTL_DAYS: 7,
   TEST_MODE: false, // true tylko do testów: zgłoszenie dostaje testowe: 1 i [TEST] w temacie
