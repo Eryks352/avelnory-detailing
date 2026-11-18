@@ -1,98 +1,318 @@
 <!doctype html>
 <html lang="pl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="robots" content="noindex,nofollow">
-  <meta name="theme-color" content="#f3f0e8">
-  <meta name="description" content="Lustro — fikcyjne studio detailingu. Przykład strony w pakiecie START AVELNORY Studio.">
-  <title>Lustro — studio detailingu, Rzeszów · przykład</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Przykład pokazowy AVELNORY: noindex, żeby fikcyjne studio nie konkurowało w Google z prawdziwymi firmami. W stronie klienta: index,follow. -->
+<meta name="robots" content="noindex,follow">
+<title>Detailing i powłoki ceramiczne Rzeszów — Lustro (przykład) | AVELNORY</title>
+<meta name="description" content="Korekta lakieru od 650 zł, powłoka ceramiczna od 700 zł, folia PPF od 4 000 zł. Wycena online w 30 sekund, gwarancja do 36 miesięcy. Przykładowa strona studia przygotowana przez AVELNORY.">
+<link rel="canonical" href="https://eryks352.github.io/avelnory-detailing/przyklad-studia/">
+<meta name="theme-color" content="#10201a">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:site_name" content="Lustro Detailing (przykład AVELNORY)">
+<meta property="og:title" content="Detailing i powłoki ceramiczne Rzeszów — Lustro (przykład)">
+<meta property="og:description" content="Cennik z cenami „od”, wycena online, gwarancja na powłoki. Przykładowa strona studia od AVELNORY.">
+<meta property="og:url" content="https://eryks352.github.io/avelnory-detailing/przyklad-studia/">
+<meta property="og:image" content="https://eryks352.github.io/avelnory-detailing/przyklad-studia/img/lustro-og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="img/lustro-3d-1600.webp" as="image" type="image/webp" fetchpriority="high" media="(min-width: 721px)">
+<link rel="preload" href="img/lustro-3d-m.webp" as="image" type="image/webp" fetchpriority="high" media="(max-width: 720px)">
+<link rel="stylesheet" href="style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "AutoRepair",
+      "@id": "https://eryks352.github.io/avelnory-detailing/przyklad-studia/#studio",
+      "name": "Lustro Detailing (przykład)",
+      "description": "Fikcyjne studio detailingu — przykład strony przygotowanej przez AVELNORY. Korekta lakieru, powłoki ceramiczne, folia PPF, detailing wnętrza.",
+      "url": "https://eryks352.github.io/avelnory-detailing/przyklad-studia/",
+      "image": "https://eryks352.github.io/avelnory-detailing/przyklad-studia/img/lustro-og.jpg",
+      "telephone": "+48 17 000 00 00",
+      "priceRange": "od 300 zł",
+      "currenciesAccepted": "PLN",
+      "paymentAccepted": "gotówka, karta, przelew",
+      "address": { "@type": "PostalAddress", "streetAddress": "ul. Przykładowa 1", "postalCode": "35-000", "addressLocality": "Rzeszów", "addressCountry": "PL" },
+      "areaServed": { "@type": "City", "name": "Rzeszów" },
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "08:00", "closes": "18:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "14:00" }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Cennik usług (przykład)",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Korekta lakieru — 1 etap" }, "priceSpecification": { "@type": "PriceSpecification", "minPrice": 650, "priceCurrency": "PLN" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Korekta lakieru — 2 etapy" }, "priceSpecification": { "@type": "PriceSpecification", "minPrice": 1100, "priceCurrency": "PLN" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Powłoka ceramiczna — 1 rok" }, "priceSpecification": { "@type": "PriceSpecification", "minPrice": 700, "priceCurrency": "PLN" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Powłoka ceramiczna — 3 lata" }, "priceSpecification": { "@type": "PriceSpecification", "minPrice": 1300, "priceCurrency": "PLN" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Folia PPF — przód" }, "priceSpecification": { "@type": "PriceSpecification", "minPrice": 4000, "priceCurrency": "PLN" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Folia PPF — całe auto" }, "priceSpecification": { "@type": "PriceSpecification", "minPrice": 12000, "priceCurrency": "PLN" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Detailing wnętrza" }, "priceSpecification": { "@type": "PriceSpecification", "minPrice": 450, "priceCurrency": "PLN" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Pranie tapicerki" }, "priceSpecification": { "@type": "PriceSpecification", "minPrice": 300, "priceCurrency": "PLN" } }
+        ]
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "Ile trwa nałożenie powłoki ceramicznej?", "acceptedAnswer": { "@type": "Answer", "text": "Od 1 do 3 dni. Większość czasu zajmuje mycie, dekontaminacja i korekta lakieru. Sama powłoka potrzebuje jeszcze kilku godzin w ciepłym pomieszczeniu, dlatego auto zwykle zostaje u nas na noc." } },
+        { "@type": "Question", "name": "Czy powłoka ceramiczna usuwa rysy?", "acceptedAnswer": { "@type": "Answer", "text": "Nie. Powłoka zabezpiecza to, co jest pod nią. Rysy i hologramy usuwa korekta lakieru, dlatego przed powłoką oceniamy lakier miernikiem grubości i w świetle inspekcyjnym." } },
+        { "@type": "Question", "name": "Kiedy mogę umyć auto po nałożeniu powłoki?", "acceptedAnswer": { "@type": "Answer", "text": "Po 7 dniach. Przez pierwszy tydzień powłoka twardnieje: unikaj mycia i chemii, a ptasie odchody zmywaj od razu wodą i miękką mikrofibrą." } },
+        { "@type": "Question", "name": "Czy z powłoką mogę jeździć na myjnię automatyczną?", "acceptedAnswer": { "@type": "Answer", "text": "Odradzamy myjnie szczotkowe, bo robią rysy także na powłoce. Bezdotykowa myjnia jest w porządku. Najlepiej myć metodą dwóch wiader — instrukcję dostajesz przy odbiorze." } },
+        { "@type": "Question", "name": "Czym różni się folia PPF od powłoki ceramicznej?", "acceptedAnswer": { "@type": "Answer", "text": "Folia PPF to warstwa ok. 0,2 mm, która przyjmuje uderzenia kamieni i drobne rysy. Powłoka ceramiczna jest cienka i chroni przed chemią, UV i brudem, ale nie przed odpryskami. Często łączymy oba: folia na przód, powłoka na resztę." } },
+        { "@type": "Question", "name": "Czy cena z kalkulatora jest ostateczna?", "acceptedAnswer": { "@type": "Answer", "text": "To widełki. Dokładną cenę podajemy po obejrzeniu auta — na miejscu albo ze zdjęć. Jeśli lakier jest w lepszym stanie, niż zakładał kalkulator, płacisz mniej." } },
+        { "@type": "Question", "name": "Jak przygotować auto do wizyty?", "acceptedAnswer": { "@type": "Answer", "text": "Wystarczy opróżnić bagażnik i schowki. Nie myj auta przed wizytą — myjemy sami, żeby ocenić lakier w czystym stanie." } }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <a class="skip" href="#tresc">Przejdź do treści</a>
-<aside class="notice"><span>Przykład AVELNORY · fikcyjne studio</span><a href="../#pakiety">Powrót do oferty ↗</a></aside>
-<header class="header">
-  <a class="brand" href="#tresc" aria-label="Lustro — początek strony">lustro<span>DETAILING / RZESZÓW</span></a>
-  <nav aria-label="Nawigacja studia"><a href="#uslugi">Usługi</a><a href="#galeria">Galeria</a><a href="#wycena">Wycena</a><a href="#zapytanie">Zapytaj</a></nav>
+<aside class="note" aria-label="Informacja o przykładzie">
+  <p>Przykładowa strona przygotowana przez <a href="../">AVELNORY</a>. Studio, adres, telefon i ceny są fikcyjne.</p>
+  <a class="note__cta" href="../#pakiety">Taka strona dla Twojego studia: od 1&nbsp;290&nbsp;zł</a>
+</aside>
+
+<header class="top">
+  <a class="brand" href="#tresc" aria-label="Lustro Detailing — początek strony">Lustro<span>detailing Rzeszów</span></a>
+  <nav aria-label="Menu studia">
+    <a href="#cennik">Cennik</a>
+    <a href="#proces">Wizyta</a>
+    <a href="#ochrona">Gwarancja</a>
+    <a href="#realizacje">Realizacje</a>
+    <a href="#kontakt">Kontakt</a>
+  </nav>
+  <a class="top__cta" href="#wycena">Wycena online</a>
 </header>
+
 <main id="tresc">
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="hero-copy"><p class="eyebrow">Dbałość, którą widać.</p><h1 id="hero-title">Przywróć mu<br>pierwsze <em>wrażenie.</em></h1><div class="hero-bottom"><p>Korekta lakieru, ochrona i&nbsp;wnętrze.<br>Detailing, który zaczyna się od&nbsp;uważnego spojrzenia na Twoje auto.</p><a class="button" href="#uslugi">Poznaj usługi <span aria-hidden="true">↗</span></a></div></div>
-    <figure class="hero-image"><img src="../assets/img/studio-hex-1600.webp" srcset="../assets/img/studio-hex-800.webp 800w, ../assets/img/studio-hex-1600.webp 1600w" sizes="(max-width:700px) 100vw, 90vw" width="1600" height="900" fetchpriority="high" alt="Wizualizacja auta w ciemnym studiu pod geometrycznym światłem"><figcaption><span>Światło wydobywa każdy detal.</span><span>01 / Pielęgnacja samochodu</span></figcaption></figure>
-    <p class="image-note">Wizualizacje wygenerowane AI, użyte wyłącznie w&nbsp;przykładzie. Nie przedstawiają realizacji ani siedziby istniejącej firmy.</p>
-  </section>
-  <section class="section services" id="uslugi" aria-labelledby="services-title">
-    <div class="section-head"><p class="eyebrow">01 / Zakres pielęgnacji</p><h2 id="services-title">Dobry efekt.<br><em>Właściwa kolejność.</em></h2><p>Najpierw stan auta i&nbsp;Twoje oczekiwania. Potem dobór zabiegów. Bez jednej recepty dla każdego lakieru.</p></div>
-    <div class="service-list">
-      <article><span class="index">01</span><div><h3>Korekta lakieru</h3><p>Jeden lub dwa etapy polerowania, dobrane do kondycji powierzchni. Cel: głębia koloru i&nbsp;czytelne odbicie.</p></div><a href="#wycena" aria-label="Korekta lakieru — wycena">Wycena ↗</a></article>
-      <article><span class="index">02</span><div><h3>Powłoka ceramiczna</h3><p>Ochrona przygotowanego lakieru i&nbsp;łatwiejsza codzienna pielęgnacja. Wariant roczny lub trzyletni z&nbsp;przykładowego cennika.</p></div><a href="#wycena" aria-label="Powłoka ceramiczna — wycena">Wycena ↗</a></article>
-      <article><span class="index">03</span><div><h3>Folia ochronna PPF</h3><p>Przód samochodu lub całe nadwozie. Zakres dopasowany do tego, jak korzystasz z&nbsp;auta.</p></div><a href="#wycena" aria-label="Folia PPF — wycena">Wycena ↗</a></article>
-      <article><span class="index">04</span><div><h3>Wnętrze i&nbsp;tapicerka</h3><p>Czyszczenie materiałów, pielęgnacja powierzchni i&nbsp;pranie tapicerki. Porządek, który czuć przy każdym otwarciu drzwi.</p></div><a href="#wycena" aria-label="Wnętrze i tapicerka — wycena">Wycena ↗</a></article>
+<section class="hero" aria-labelledby="h1">
+  <div class="hero__stage">
+    <picture class="hero__poster">
+      <source media="(max-width: 720px)" srcset="img/lustro-3d-m.webp">
+      <img src="img/lustro-3d-1600.webp" width="1600" height="900" alt="Wizualizacja 3D: maska auta w ciemnozielonym metaliku, lewa część po korekcie lakieru, prawa jeszcze zmatowiona" fetchpriority="high">
+    </picture>
+    <canvas class="hero__scene" id="scene" aria-hidden="true"></canvas>
+    <div class="hero__copy">
+      <h1 id="h1">Detailing i&nbsp;powłoki ceramiczne — Rzeszów</h1>
+      <p class="hero__lead">Korekta lakieru, ceramika i&nbsp;folia PPF. Cenę widzisz od razu w&nbsp;kalkulatorze, termin potwierdzamy w&nbsp;ciągu 24&nbsp;godzin.</p>
+      <div class="hero__actions"><a class="btn" href="#wycena">Wyceń swoje auto</a><a class="link" href="#cennik">Zobacz cennik</a></div>
     </div>
-  </section>
-  <section class="section gallery" id="galeria" aria-labelledby="gallery-title">
-    <div class="gallery-heading"><p class="eyebrow">02 / Bliżej powierzchni</p><h2 id="gallery-title">Różnica tkwi<br><em>w detalu.</em></h2><p>Galeria poglądowa. Na stronie Twojego studia to miejsce na zdjęcia Twoich realizacji.</p></div>
-    <figure class="gallery-large"><img src="../assets/img/macro-beads-800.webp" width="800" height="533" loading="lazy" alt="Wizualizacja kropel wody na ciemnym lakierze"><figcaption>01 — Lakier / wizualizacja AI</figcaption></figure>
-    <figure><img src="../assets/img/macro-interior-800.webp" width="800" height="533" loading="lazy" alt="Wizualizacja faktury samochodowego wnętrza"><figcaption>02 — Wnętrze / wizualizacja AI</figcaption></figure>
-    <figure><img src="../assets/img/macro-ppf-800.webp" width="800" height="533" loading="lazy" alt="Wizualizacja folii ochronnej na karoserii"><figcaption>03 — Ochrona / wizualizacja AI</figcaption></figure>
-  </section>
-  <section class="section quote" id="wycena" aria-labelledby="quote-title">
-    <div class="quote-head"><p class="eyebrow">03 / Wycena online</p><h2 id="quote-title">Twoje auto.<br><em>Twój zakres.</em></h2><p class="quote-lead">Trzy wybory i&nbsp;od razu widzisz orientacyjne widełki. Ceny są przykładowe&nbsp;— w&nbsp;Twoim studiu wpiszemy Twój cennik.</p></div>
+    <dl class="hero__facts">
+      <div><dt>Korekta lakieru</dt><dd>od 650&nbsp;zł</dd></div>
+      <div><dt>Powłoka ceramiczna</dt><dd>od 700&nbsp;zł</dd></div>
+      <div><dt>Gwarancja na powłokę</dt><dd>do 36&nbsp;mies.</dd></div>
+      <div><dt>Otwarte</dt><dd>pn–pt 8–18, sb 9–14</dd></div>
+    </dl>
+    <p class="hero__split" aria-hidden="true"><span>Lakier pod światłem inspekcyjnym</span></p>
+  </div>
+</section>
+
+<section class="sec" id="cennik" aria-labelledby="cennik-h">
+  <header class="sec__head">
+    <h2 id="cennik-h">Cennik usług</h2>
+    <p>Ceny „od” dotyczą małego auta z&nbsp;lakierem w&nbsp;dobrym stanie. Większe auto albo zmatowiony lakier podnosi cenę — dokładne widełki pokazuje <a href="#wycena">kalkulator</a>.</p>
+  </header>
+  <div class="prices">
+    <div class="prices__group">
+      <h3>Lakier</h3>
+      <table>
+        <thead><tr><th scope="col">Usługa</th><th scope="col">Na czym polega</th><th scope="col" class="num">Cena</th><th scope="col" class="num">Czas w&nbsp;studiu</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Korekta lakieru — 1&nbsp;etap</th><td>Jedno polerowanie, usuwa ok. 60–70% hologramów i&nbsp;drobnych rys, przywraca połysk.</td><td class="num">od 650&nbsp;zł</td><td class="num">1–2&nbsp;dni</td></tr>
+          <tr><th scope="row">Korekta lakieru — 2&nbsp;etapy</th><td>Cięcie i&nbsp;wykończenie. Usuwa ok. 80–90% defektów, lakier wygląda jak lustro.</td><td class="num">od 1&nbsp;100&nbsp;zł</td><td class="num">2–3&nbsp;dni</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prices__group">
+      <h3>Ochrona</h3>
+      <table>
+        <thead><tr><th scope="col">Usługa</th><th scope="col">Na czym polega</th><th scope="col" class="num">Cena</th><th scope="col" class="num">Czas w&nbsp;studiu</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Powłoka ceramiczna — 1&nbsp;rok</th><td>Jedna warstwa po myciu i&nbsp;odtłuszczeniu. Woda perli się i&nbsp;spływa, brud trzyma się słabiej.</td><td class="num">od 700&nbsp;zł</td><td class="num">1–2&nbsp;dni</td></tr>
+          <tr><th scope="row">Powłoka ceramiczna — 3&nbsp;lata</th><td>Baza i&nbsp;warstwa wierzchnia, twardsza i&nbsp;grubsza. Coroczny przegląd w&nbsp;studiu.</td><td class="num">od 1&nbsp;300&nbsp;zł</td><td class="num">2–3&nbsp;dni</td></tr>
+          <tr><th scope="row">Folia PPF — przód</th><td>Maska, zderzak, błotniki i&nbsp;lusterka. Przyjmuje uderzenia kamieni, drobne rysy znikają w&nbsp;cieple.</td><td class="num">od 4&nbsp;000&nbsp;zł</td><td class="num">2–3&nbsp;dni</td></tr>
+          <tr><th scope="row">Folia PPF — całe auto</th><td>Pełne oklejenie nadwozia, krawędzie zawinięte pod panele.</td><td class="num">od 12&nbsp;000&nbsp;zł</td><td class="num">5–8&nbsp;dni</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prices__group">
+      <h3>Wnętrze</h3>
+      <table>
+        <thead><tr><th scope="col">Usługa</th><th scope="col">Na czym polega</th><th scope="col" class="num">Cena</th><th scope="col" class="num">Czas w&nbsp;studiu</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Detailing wnętrza</th><td>Odkurzanie, czyszczenie plastików, szyb i&nbsp;skóry, impregnacja.</td><td class="num">od 450&nbsp;zł</td><td class="num">1–2&nbsp;dni</td></tr>
+          <tr><th scope="row">Pranie tapicerki</th><td>Fotele, kanapa i&nbsp;dywaniki, ekstrakcja i&nbsp;suszenie.</td><td class="num">od 300&nbsp;zł</td><td class="num">1&nbsp;dzień</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="sec calc-sec" id="wycena" aria-labelledby="quote-title">
+  <header class="sec__head">
+    <h2 id="quote-title">Wycena online w&nbsp;30 sekund</h2>
+    <p>Trzy wybory i&nbsp;widzisz widełki ceny oraz czas pracy. Wynik dołączysz jednym kliknięciem do zapytania o&nbsp;termin.</p>
+  </header>
+  <div class="quote">
     <form class="calc" id="calc" aria-label="Kalkulator wyceny">
-      <fieldset><legend><span>1</span>Wielkość auta</legend><div class="chips" id="cars"></div></fieldset>
-      <fieldset><legend><span>2</span>Usługa</legend><div class="chips chips-svc" id="services"></div></fieldset>
-      <fieldset id="cond-set"><legend><span>3</span>Stan lakieru</legend><div class="chips" id="conds"></div><p class="hint" id="cond-note"></p></fieldset>
+      <fieldset><legend>Wielkość auta</legend><div class="chips" id="cars"></div></fieldset>
+      <fieldset><legend>Usługa</legend><div class="chips chips-svc" id="services"></div></fieldset>
+      <fieldset id="cond-set"><legend>Stan lakieru</legend><div class="chips" id="conds"></div><p class="hint" id="cond-note"></p></fieldset>
       <noscript><p class="hint">Kalkulator wymaga JavaScript. Zapytaj o&nbsp;wycenę w&nbsp;formularzu poniżej.</p></noscript>
     </form>
     <div class="result" aria-live="polite" aria-atomic="true">
-      <p class="eyebrow">Orientacyjnie</p>
+      <p class="result__label">Orientacyjnie</p>
       <p class="price"><span id="price">—</span><span class="zl">&nbsp;zł</span></p>
       <p class="res-what" id="res-what"></p>
       <p class="res-time" id="res-time"></p>
-      <button class="button light" id="to-form" type="button">Zapytaj o&nbsp;termin z&nbsp;tą wyceną <span aria-hidden="true">↓</span></button>
-      <p class="fine">Cennik przykładowy. Dokładną cenę studio ustala po obejrzeniu auta.</p>
+      <button class="btn btn--light" id="to-form" type="button">Zapytaj o&nbsp;termin z&nbsp;tą wyceną</button>
+      <p class="fine">Cennik przykładowy. Dokładną cenę podajemy po obejrzeniu auta.</p>
     </div>
-  </section>
-  <section class="section inquiry" id="zapytanie" aria-labelledby="inquiry-title">
-    <div class="inquiry-head"><p class="eyebrow">04 / Zapytanie</p><h2 id="inquiry-title">Zapytaj<br><em>o&nbsp;termin.</em></h2><p>Odpowiedź z&nbsp;propozycją terminu i&nbsp;pytaniami o&nbsp;stan auta. Wycena z&nbsp;kalkulatora dołącza się sama.</p>
-      <div class="attached" id="attached" hidden><p class="eyebrow">Dołączona wycena</p><p id="attached-text"></p><button type="button" class="text-btn" id="detach">Usuń z&nbsp;zapytania</button></div>
+  </div>
+</section>
+
+<section class="sec" id="proces" aria-labelledby="proces-h">
+  <header class="sec__head">
+    <h2 id="proces-h">Jak wygląda wizyta</h2>
+    <p>Od zapytania do odbioru auta. Przy powłoce ceramicznej całość trwa zwykle 2–3 dni.</p>
+  </header>
+  <ol class="steps">
+    <li><h3>Wycena i&nbsp;termin</h3><p>Wysyłasz zapytanie z&nbsp;kalkulatora albo dzwonisz. W&nbsp;ciągu 24&nbsp;godzin potwierdzamy termin i&nbsp;widełki ceny.</p><span class="steps__t">5 minut</span></li>
+    <li><h3>Oględziny przy oddaniu</h3><p>Mierzymy grubość lakieru, oglądamy go w&nbsp;świetle inspekcyjnym i&nbsp;ustalamy z&nbsp;Tobą zakres. Cena jest ostateczna, zanim zaczniemy.</p><span class="steps__t">15 minut</span></li>
+    <li><h3>Mycie i&nbsp;dekontaminacja</h3><p>Mycie ręczne, usunięcie smoły, opiłków żelaza i&nbsp;osadów glinką. Dopiero na czystym lakierze widać prawdziwe defekty.</p><span class="steps__t">3–4 godziny</span></li>
+    <li><h3>Korekta i&nbsp;zabezpieczenie</h3><p>Polerowanie w&nbsp;jednym lub dwóch etapach, odtłuszczenie, nałożenie powłoki lub folii. Powłoka utwardza się w&nbsp;ciepłym pomieszczeniu przez noc.</p><span class="steps__t">1–2 dni</span></li>
+    <li><h3>Odbiór i&nbsp;pielęgnacja</h3><p>Pokazujemy efekt w&nbsp;świetle inspekcyjnym, dajemy kartę gwarancyjną i&nbsp;instrukcję mycia. Po 30 dniach zapraszamy na bezpłatną kontrolę.</p><span class="steps__t">20 minut</span></li>
+  </ol>
+</section>
+
+<section class="sec" id="ochrona" aria-labelledby="ochrona-h">
+  <header class="sec__head">
+    <h2 id="ochrona-h">Powłoki i&nbsp;gwarancja</h2>
+    <p>Gwarancja jest pisemna i&nbsp;zależy od regularnych przeglądów. Wartości poniżej są przykładowe — na stronie Twojego studia wpisujemy produkty, których naprawdę używasz.</p>
+  </header>
+  <div class="table-wrap">
+    <table class="spec">
+      <thead><tr><th scope="col">Zabezpieczenie</th><th scope="col">Warstwy</th><th scope="col">Deklarowana trwałość</th><th scope="col">Gwarancja</th><th scope="col">Warunek gwarancji</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Powłoka ceramiczna 1&nbsp;rok</th><td>1 warstwa</td><td>12 miesięcy</td><td>12 miesięcy</td><td>Bezpłatna kontrola po 6&nbsp;miesiącach</td></tr>
+        <tr><th scope="row">Powłoka ceramiczna 3&nbsp;lata</th><td>baza + warstwa wierzchnia</td><td>36 miesięcy</td><td>36 miesięcy</td><td>Przegląd co 12 miesięcy, od 250&nbsp;zł</td></tr>
+        <tr><th scope="row">Folia PPF</th><td>folia poliuretanowa ok. 0,2&nbsp;mm</td><td>do 10 lat</td><td>5 lat na żółknięcie i&nbsp;odklejanie</td><td>Mycie bez myjni szczotkowych</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="sec" id="realizacje" aria-labelledby="realizacje-h">
+  <header class="sec__head">
+    <h2 id="realizacje-h">Realizacje</h2>
+    <p>W&nbsp;przykładzie pokazujemy wizualizacje. Na stronie Twojego studia w&nbsp;tym miejscu są zdjęcia Twoich aut — do 12 kadrów.</p>
+  </header>
+  <div class="gallery">
+    <figure class="g1"><img src="../assets/img/macro-polish-1600.webp" srcset="../assets/img/macro-polish-800.webp 800w, ../assets/img/macro-polish-1600.webp 1600w" sizes="(max-width:720px) 100vw, 58vw" width="1600" height="1067" loading="lazy" decoding="async" alt="Polerka na czarnym lakierze: z&nbsp;lewej hologramy, z&nbsp;prawej lustro"><figcaption>Korekta 2-etapowa, czarny lakier. Wizualizacja.</figcaption></figure>
+    <figure class="g2"><img src="../assets/img/macro-beads-800.webp" width="800" height="533" loading="lazy" decoding="async" alt="Krople wody perlące się na lakierze po powłoce ceramicznej"><figcaption>Powłoka 3 lata, efekt perlenia. Wizualizacja.</figcaption></figure>
+    <figure class="g3"><img src="../assets/img/macro-ppf-800.webp" width="800" height="533" loading="lazy" decoding="async" alt="Nakładanie folii ochronnej PPF rakla na karoserię"><figcaption>Folia PPF na przód auta. Wizualizacja.</figcaption></figure>
+    <figure class="g4"><img src="../assets/img/macro-interior-800.webp" width="800" height="533" loading="lazy" decoding="async" alt="Przeszycia czarnego skórzanego fotela po czyszczeniu"><figcaption>Detailing wnętrza, skóra. Wizualizacja.</figcaption></figure>
+    <figure class="g5"><img src="../assets/img/car-suv-800.webp" width="800" height="400" loading="lazy" decoding="async" alt="Czarny SUV z&nbsp;boku w&nbsp;ciemnym studiu po korekcie lakieru"><figcaption>SUV, korekta i&nbsp;ceramika. Wizualizacja.</figcaption></figure>
+    <figure class="g6"><img src="../assets/img/studio-hex-800.webp" width="800" height="450" loading="lazy" decoding="async" alt="Wnętrze studia detailingu z&nbsp;oświetleniem inspekcyjnym nad mokrą posadzką"><figcaption>Hala z&nbsp;oświetleniem inspekcyjnym. Wizualizacja.</figcaption></figure>
+  </div>
+</section>
+
+<section class="sec inquiry" id="zapytanie" aria-labelledby="inquiry-title">
+  <header class="sec__head">
+    <h2 id="inquiry-title">Zapytaj o&nbsp;termin</h2>
+    <p>Odpowiadamy w&nbsp;ciągu 24&nbsp;godzin z&nbsp;propozycją terminu. Wycena z&nbsp;kalkulatora dołącza się sama.</p>
+    <div class="attached" id="attached" hidden><p class="attached__label">Dołączona wycena</p><p id="attached-text"></p><button type="button" class="text-btn" id="detach">Usuń z&nbsp;zapytania</button></div>
+  </header>
+  <div class="inquiry-body">
+    <form id="inquiry" novalidate>
+      <div class="row"><label class="field"><span>Imię</span><input name="imie" autocomplete="given-name" required maxlength="60"></label>
+      <label class="field"><span>Telefon</span><input name="telefon" type="tel" autocomplete="tel" required pattern="[0-9+\(\)\s\-]{7,25}" inputmode="tel"></label></div>
+      <label class="field"><span>E-mail</span><input name="email" type="email" autocomplete="email" required maxlength="120"></label>
+      <div class="row"><label class="field"><span>Marka i&nbsp;model auta</span><input name="auto" required maxlength="80" placeholder="np. Skoda Octavia 2019"></label>
+      <label class="field"><span>Kiedy?</span><select name="termin"><option>Elastycznie</option><option>W&nbsp;ciągu 2 tygodni</option><option>W&nbsp;ciągu miesiąca</option></select></label></div>
+      <label class="field"><span>Wiadomość <i>(opcjonalnie)</i></span><textarea name="wiadomosc" rows="3" maxlength="1000"></textarea></label>
+      <input type="hidden" name="wycena">
+      <label class="hp" aria-hidden="true">Strona www<input name="website_extra" tabindex="-1" autocomplete="off"></label>
+      <label class="consent"><input type="checkbox" name="zgoda" required><span>Zgadzam się na kontakt w&nbsp;sprawie tego zapytania.</span></label>
+      <div class="submit-row"><button class="btn" id="send" type="submit">Wyślij zapytanie</button><p class="fine">To przykład: zapytanie nie jest nigdzie wysyłane, zostaje tylko w&nbsp;tej przeglądarce.</p></div>
+      <p class="form-error" id="form-error" role="alert"></p>
+    </form>
+    <div class="done" id="done" tabindex="-1" hidden>
+      <p class="done__label">Zapytanie przyjęte — przykład</p>
+      <h3 id="done-title">Dziękujemy.</h3>
+      <p>To strona pokazowa, więc zapytanie nie trafiło do żadnego studia ani na żaden adres e-mail. Zapisaliśmy je tylko w&nbsp;tej przeglądarce.</p>
+      <p>Na stronie Twojego studia klient widzi tu potwierdzenie, a&nbsp;Ty dostajesz e-mail z&nbsp;danymi i&nbsp;wyceną.</p>
+      <dl id="done-summary"></dl>
+      <div class="done-actions"><button class="btn" type="button" id="again">Nowe zapytanie</button><button class="text-btn" type="button" id="wipe">Usuń dane przykładu</button></div>
     </div>
-    <div class="inquiry-body">
-      <form id="inquiry" novalidate>
-        <div class="row"><label class="field"><span>Imię</span><input name="imie" autocomplete="given-name" required maxlength="60"></label>
-        <label class="field"><span>Telefon</span><input name="telefon" type="tel" autocomplete="tel" required pattern="[0-9+\(\)\s\-]{7,25}" inputmode="tel"></label></div>
-        <label class="field"><span>E-mail</span><input name="email" type="email" autocomplete="email" required maxlength="120"></label>
-        <div class="row"><label class="field"><span>Marka i&nbsp;model auta</span><input name="auto" required maxlength="80" placeholder="np. Skoda Octavia 2019"></label>
-        <label class="field"><span>Kiedy?</span><select name="termin"><option>Elastycznie</option><option>W&nbsp;ciągu 2 tygodni</option><option>W&nbsp;ciągu miesiąca</option></select></label></div>
-        <label class="field"><span>Wiadomość <i>(opcjonalnie)</i></span><textarea name="wiadomosc" rows="3" maxlength="1000"></textarea></label>
-        <input type="hidden" name="wycena">
-        <label class="hp" aria-hidden="true">Strona www<input name="website_extra" tabindex="-1" autocomplete="off"></label>
-        <label class="consent"><input type="checkbox" name="zgoda" required><span>Zgadzam się na kontakt w&nbsp;sprawie tego zapytania.</span></label>
-        <div class="submit-row"><button class="button" id="send" type="submit">Wyślij zapytanie <span aria-hidden="true">→</span></button><p class="fine">Przykład: dane zostają tylko w&nbsp;tej przeglądarce.</p></div>
-        <p class="form-error" id="form-error" role="alert"></p>
-      </form>
-      <div class="done" id="done" tabindex="-1" hidden>
-        <p class="eyebrow">Zapytanie przyjęte · przykład</p>
-        <h3 id="done-title">Dziękujemy.</h3>
-        <p>To strona pokazowa, więc zapytanie nie trafiło do żadnego studia ani na żaden adres e-mail. Zapisaliśmy je tylko w&nbsp;tej przeglądarce.</p>
-        <p>Na stronie Twojego studia w&nbsp;tym miejscu klient dostaje potwierdzenie, a&nbsp;Ty&nbsp;— e-mail z&nbsp;danymi i&nbsp;wyceną.</p>
-        <dl id="done-summary"></dl>
-        <div class="done-actions"><button class="button" type="button" id="again">Nowe zapytanie</button><button class="text-btn" type="button" id="wipe">Usuń dane przykładu</button></div>
-      </div>
-    </div>
-  </section>
-  <section class="section faq" aria-labelledby="faq-title"><div><p class="eyebrow">05 / Przed wizytą</p><h2 id="faq-title">Warto<br><em>wiedzieć.</em></h2></div><div>
-    <details><summary>Czy cena z kalkulatora będzie ostateczna?</summary><p>Nie. Kalkulator pokazuje orientacyjne widełki. Zakres pracy i&nbsp;dokładną cenę studio ustala po obejrzeniu samochodu lub zdjęć.</p></details>
-    <details><summary>Korekta czy sama ochrona?</summary><p>Powłoka nie usuwa istniejących rys. Dlatego przed zabezpieczeniem warto ocenić lakier i&nbsp;ustalić, czy wymaga korekty.</p></details>
-    <details><summary>Czy przez stronę zarezerwuję termin?</summary><p>Formularz wysyła zapytanie, a&nbsp;nie rezerwację. Studio potwierdza termin osobno, telefonicznie lub e-mailem.</p></details>
-    <details><summary>Czy Lustro jest prawdziwym studiem?</summary><p>Nie. Nazwa, lokalizacja w&nbsp;mieście i&nbsp;oferta są przykładowe. Strona pokazuje projekt AVELNORY. Nie zamówisz tu usługi detailingu.</p></details>
-  </div></section>
-  <section class="section contact" id="kontakt" aria-labelledby="contact-title"><div><p class="eyebrow">06 / Kontakt</p><h2 id="contact-title">Zacznijmy<br><em>od rozmowy.</em></h2><p>Lustro · Rzeszów <strong>(przykład)</strong></p><p>Nie podajemy fikcyjnego numeru telefonu ani adresu. W&nbsp;gotowej stronie znajdą się tu dane i&nbsp;godziny pracy Twojego studia.</p><a class="text-link" href="../#formularz">Zapytaj AVELNORY o&nbsp;taką stronę ↗</a></div><a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Rzesz%C3%B3w" target="_blank" rel="noopener" aria-label="Otwórz mapę miasta Rzeszów — bez lokalizacji studia">
-    <svg viewBox="0 0 600 400" role="img" aria-label="Abstrakcyjny schemat miasta, bez lokalizacji firmy"><rect width="600" height="400" fill="#e8e5da"/><path d="M410-20C250 80 480 210 290 420" stroke="#b8c9c4" stroke-width="38" fill="none"/><g stroke="#f9f7f1" stroke-width="16" fill="none"><path d="M-20 105 630 245M80-20 230 430M-20 340 600 40M460-20 540 430"/><path d="m0 200 600 180M210 0 400 400" stroke-width="8"/></g><text x="60" y="66" fill="#31443a" font-family="Georgia,serif" font-size="34">Rzeszów</text></svg><span>Schemat poglądowy · Otwórz mapę miasta ↗</span></a></section>
+  </div>
+</section>
+
+<section class="sec" id="faq" aria-labelledby="faq-h">
+  <header class="sec__head"><h2 id="faq-h">Pytania przed wizytą</h2><p>Najczęstsze pytania klientów przed pierwszą korektą lub powłoką.</p></header>
+  <div class="faq">
+    <details><summary>Ile trwa nałożenie powłoki ceramicznej?</summary><p>Od 1 do 3 dni. Większość czasu zajmuje mycie, dekontaminacja i&nbsp;korekta lakieru. Sama powłoka potrzebuje jeszcze kilku godzin w&nbsp;ciepłym pomieszczeniu, dlatego auto zwykle zostaje u&nbsp;nas na noc.</p></details>
+    <details><summary>Czy powłoka ceramiczna usuwa rysy?</summary><p>Nie. Powłoka zabezpiecza to, co jest pod nią. Rysy i&nbsp;hologramy usuwa korekta lakieru, dlatego przed powłoką oceniamy lakier miernikiem grubości i&nbsp;w&nbsp;świetle inspekcyjnym.</p></details>
+    <details><summary>Kiedy mogę umyć auto po nałożeniu powłoki?</summary><p>Po 7 dniach. Przez pierwszy tydzień powłoka twardnieje: unikaj mycia i&nbsp;chemii, a&nbsp;ptasie odchody zmywaj od razu wodą i&nbsp;miękką mikrofibrą.</p></details>
+    <details><summary>Czy z&nbsp;powłoką mogę jeździć na myjnię automatyczną?</summary><p>Odradzamy myjnie szczotkowe, bo robią rysy także na powłoce. Bezdotykowa myjnia jest w&nbsp;porządku. Najlepiej myć metodą dwóch wiader — instrukcję dostajesz przy odbiorze.</p></details>
+    <details><summary>Czym różni się folia PPF od powłoki ceramicznej?</summary><p>Folia PPF to warstwa ok. 0,2&nbsp;mm, która przyjmuje uderzenia kamieni i&nbsp;drobne rysy. Powłoka ceramiczna jest cienka i&nbsp;chroni przed chemią, UV i&nbsp;brudem, ale nie przed odpryskami. Często łączymy oba: folia na przód, powłoka na resztę.</p></details>
+    <details><summary>Czy cena z&nbsp;kalkulatora jest ostateczna?</summary><p>To widełki. Dokładną cenę podajemy po obejrzeniu auta — na miejscu albo ze zdjęć. Jeśli lakier jest w&nbsp;lepszym stanie, niż zakładał kalkulator, płacisz mniej.</p></details>
+    <details><summary>Jak przygotować auto do wizyty?</summary><p>Wystarczy opróżnić bagażnik i&nbsp;schowki. Nie myj auta przed wizytą — myjemy sami, żeby ocenić lakier w&nbsp;czystym stanie.</p></details>
+  </div>
+</section>
+
+<section class="sec visit" id="kontakt" aria-labelledby="kontakt-h">
+  <header class="sec__head"><h2 id="kontakt-h">Dojazd i&nbsp;godziny</h2><p>Dane przykładowe — w&nbsp;stronie Twojego studia wpisujemy prawdziwy adres i&nbsp;numer.</p></header>
+  <div class="visit__grid">
+    <address>
+      <strong>Lustro Detailing</strong><br>
+      ul. Przykładowa 1, 35-000 Rzeszów<br>
+      <span class="muted">adres przykładowy</span>
+    </address>
+    <p class="visit__phone">Telefon: <span>+48 17 000 00 00</span> <span class="muted">(numer przykładowy)</span></p>
+    <table class="hours">
+      <caption>Godziny otwarcia</caption>
+      <tbody>
+        <tr><th scope="row">Poniedziałek–piątek</th><td><time datetime="08:00">8:00</time>–<time datetime="18:00">18:00</time></td></tr>
+        <tr><th scope="row">Sobota</th><td><time datetime="09:00">9:00</time>–<time datetime="14:00">14:00</time></td></tr>
+        <tr><th scope="row">Niedziela</th><td>nieczynne</td></tr>
+      </tbody>
+    </table>
+    <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Rzesz%C3%B3w" target="_blank" rel="noopener">Otwórz mapę Rzeszowa w&nbsp;Google Maps<span class="muted"> — studio jest fikcyjne, link prowadzi do miasta</span></a>
+  </div>
+</section>
+
+<aside class="sell" aria-labelledby="sell-h">
+  <h2 id="sell-h">Chcesz taką stronę dla swojego studia?</h2>
+  <p>To przykład pakietu START od AVELNORY: cennik, kalkulator według Twoich cen, formularz z&nbsp;wyceną, SEO lokalne i&nbsp;uporządkowany Profil Google. Gotowe w&nbsp;7 dni roboczych.</p>
+  <dl class="sell__prices">
+    <div><dt>START</dt><dd>1&nbsp;290&nbsp;zł jednorazowo</dd></div>
+    <div><dt>Oferta założycielska, pierwsze 3 studia</dt><dd>990&nbsp;zł</dd></div>
+    <div><dt>Opieka po wdrożeniu</dt><dd>99&nbsp;zł / mies.</dd></div>
+  </dl>
+  <p class="sell__contact"><a class="btn btn--light" href="../#formularz">Zapytaj AVELNORY</a><a href="mailto:avelnory.studio@gmail.com">avelnory.studio@gmail.com</a><a href="tel:+48530032924">530 032 924</a></p>
+</aside>
 </main>
-<footer><a class="brand" href="#tresc">lustro<span>DETAILING / PRZYKŁAD</span></a><p>Projekt pokazowy AVELNORY Studio.<br>Fikcyjna firma, przykład pakietu START.</p><a href="../">Wróć do AVELNORY ↗</a></footer>
+
+<footer class="foot">
+  <p class="foot__brand">Lustro<span>detailing Rzeszów — studio fikcyjne</span></p>
+  <p>Przykładowa strona przygotowana przez <a href="../">AVELNORY</a>. Nazwa studia, adres, telefon, ceny i&nbsp;gwarancje są wymyślone na potrzeby pokazu. Grafiki to wizualizacje, nie zdjęcia realizacji.</p>
+  <a href="../#pakiety">Oferta AVELNORY</a>
+</footer>
+
 <script src="../assets/config.js"></script>
 <script src="app.js" defer></script>
+<script type="module" src="studio.js"></script>
 </body>
 </html>

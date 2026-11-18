@@ -26,7 +26,8 @@ export function createHero(canvas, opts = {}) {
   const maxDpr = opts.maxDpr || (mobile ? 1.25 : 1.5);
   let scale = 1;
 
-  const BG = 0x07090d;
+  // Parametry wyglądu (domyślne = hero AVELNORY): tło, lakier, rodzaj świateł, kadr, ruch kamery przy przewijaniu.
+  const BG = opts.bg ?? 0x07090d;
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(BG);
   scene.fog = new THREE.Fog(BG, 4.2, 8.5);
@@ -34,6 +35,15 @@ export function createHero(canvas, opts = {}) {
   /* --- studio do odbić: pole sześciokątnych świetlówek w ramie, softbox wzdłuż auta, słabe panele ścienne --- */
   const env = new THREE.Scene();
   env.background = new THREE.Color(0x010102);
+  const m4 = new THREE.Matrix4(), q4 = new THREE.Quaternion(), v3 = new THREE.Vector3(), s3 = new THREE.Vector3(), col = new THREE.Color();
+  if (opts.lamps === 'strips') {
+    // studio z długimi, ciepłymi softboxami w poprzek sufitu (inny charakter niż pole sześciokątów)
+    const warm = new THREE.Color(1, 0.9, 0.76);
+    for (let i = 0; i < 9; i++) {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(7.5, 0.05, 0.34), new THREE.MeshBasicMaterial({ color: warm.clone().multiplyScalar(5.2 * (0.9 + 0.2 * Math.random())) }));
+      b.position.set(0.6, 2.7, 1.2 - i * 1.15); env.add(b);
+    }
+  } else {
   const tubeGeo = new THREE.BoxGeometry(1, 0.06, 0.06);
   const R = 0.42, cols = 13, rows = 22, edges = [];
   for (let q = 0; q < cols; q++) for (let r = 0; r < rows; r++) {
@@ -45,7 +55,6 @@ export function createHero(canvas, opts = {}) {
     }
   }
   const tubes = new THREE.InstancedMesh(tubeGeo, new THREE.MeshBasicMaterial({ color: 0xffffff }), edges.length);
-  const m4 = new THREE.Matrix4(), q4 = new THREE.Quaternion(), v3 = new THREE.Vector3(), s3 = new THREE.Vector3(), col = new THREE.Color();
   edges.forEach(([x, z, a, len], i) => {
     m4.compose(v3.set(x + 1.2, 2.7, z - 4.2), q4.setFromAxisAngle(new THREE.Vector3(0, 1, 0), -a), s3.set(len, 1, 1));
     tubes.setMatrixAt(i, m4);
@@ -57,6 +66,7 @@ export function createHero(canvas, opts = {}) {
   [[0, -fd / 2, fw, 0.04], [0, fd / 2, fw, 0.04], [-fw / 2, 0, 0.04, fd], [fw / 2, 0, 0.04, fd]].forEach(([x, z, w, d]) => {
     const b = new THREE.Mesh(new THREE.BoxGeometry(w, 0.04, d), frameMat); b.position.set(x + 1.2, 2.7, z - 4.2); env.add(b);
   });
+  }
   const soft = new THREE.Mesh(new THREE.PlaneGeometry(0.45, 12), new THREE.MeshBasicMaterial({ color: new THREE.Color(1, 1, 1).multiplyScalar(2.4), side: THREE.DoubleSide }));
   soft.position.set(-3.4, 2.0, -3); soft.rotation.set(-Math.PI / 2, 0.45, 0); env.add(soft);
   const soft2 = soft.clone(); soft2.position.set(3.6, 2.0, -3); soft2.rotation.set(-Math.PI / 2, -0.45, 0); env.add(soft2);
@@ -91,7 +101,7 @@ export function createHero(canvas, opts = {}) {
   const u = { intro: opts.intro ?? 0, scroll: 0, defect: opts.defect ?? 0, wipe: opts.defect ? -0.2 : 1.3, lampOn: 0, drops: 1 };
   const shaderU = { uWipe: { value: u.wipe }, uDefect: { value: u.defect }, uRes: { value: new THREE.Vector2(1, 1) }, uBar: { value: 99 }, uBarOn: { value: 0 } };
   const paint = new THREE.MeshPhysicalMaterial({
-    color: 0x050608, metalness: 0.2, roughness: 0.42, normalMap: flakes, normalScale: new THREE.Vector2(0.45, 0.45),
+    color: opts.paint ?? 0x050608, metalness: opts.metal ?? 0.2, roughness: 0.42, normalMap: flakes, normalScale: new THREE.Vector2(0.45, 0.45),
     clearcoat: 1, clearcoatRoughness: 0.035, envMapIntensity: 1
   });
   paint.onBeforeCompile = sh => {
@@ -197,7 +207,7 @@ export function createHero(canvas, opts = {}) {
     camera.aspect = w / h;
     const portrait = w < h;
     // kadr: na desktopie bryła po prawej (nagłówek po lewej), na telefonie w górnej części ekranu
-    camera.setViewOffset(w, h, portrait ? 0 : -w * 0.17, portrait ? h * 0.25 : 0, w, h);
+    camera.setViewOffset(w, h, portrait ? 0 : -w * (opts.frameX ?? 0.17), portrait ? h * (opts.frameY ?? 0.25) : 0, w, h);
     camera.fov = portrait ? 46 : 30;
     camera.updateProjectionMatrix();
     shaderU.uRes.value.set(w * dpr, h * dpr);
@@ -214,8 +224,8 @@ export function createHero(canvas, opts = {}) {
     const s = u.scroll, ease = 1 - Math.pow(1 - Math.min(1, u.intro), 3);
     const portrait = w < h;
     // kamera: wjazd przy starcie, powolne okrążanie, przy przewijaniu schodzi nisko nad lakier
-    const az = D((portrait ? 26 : 34) + 16 * (1 - ease) - 20 * s + Math.sin(t * 0.21) * 13 + mouse[0] * 5);
-    const el = D((portrait ? 30 : 23) + 6 * (1 - ease) - 15 * s + Math.sin(t * 0.13 + 1) * 2.5 + mouse[1] * 2);
+    const az = D((portrait ? 26 : 34) + 16 * (1 - ease) + (opts.scrollAz ?? -20) * s + Math.sin(t * 0.21) * 13 + mouse[0] * 5);
+    const el = D((portrait ? 30 : 23) + 6 * (1 - ease) + (opts.scrollEl ?? -15) * s + Math.sin(t * 0.13 + 1) * 2.5 + mouse[1] * 2);
     const rad = (portrait ? 4.4 : 4.3) + 0.9 * (1 - ease) - 1.1 * s + Math.sin(t * 0.17) * 0.15;
     target.set(0, -0.12, -0.35 + 0.4 * s);
     camera.position.set(target.x + rad * Math.cos(el) * Math.sin(az), target.y + rad * Math.sin(el), target.z + rad * Math.cos(el) * Math.cos(az));
