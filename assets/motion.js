@@ -275,7 +275,8 @@
     if (!st.isActive || num.textContent === s.dataset.step) return;
     gsap.fromTo(num, { yPercent: st.direction > 0 ? 100 : -100 }, { yPercent: 0, duration: .8, ease: 'expo.out' }); num.textContent = s.dataset.step;
   } }));
-  $$('[data-parallax]').forEach(img => gsap.fromTo(img, { yPercent: -5 }, { yPercent: 5, ease: 'none', scrollTrigger: { trigger: img.closest('figure'), start: 'top bottom', end: 'bottom top', scrub: true } }));
+  // Skala 1,14 daje 7 % zapasu z każdej strony, przesunięcie ±5 % — krawędź obrazu nigdy nie wchodzi w kadr.
+  $$('[data-parallax]').forEach(img => gsap.fromTo(img, { yPercent: -5, scale: 1.14 }, { yPercent: 5, scale: 1.14, ease: 'none', scrollTrigger: { trigger: img.closest('figure'), start: 'top bottom', end: 'bottom top', scrub: true } }));
 
   // 7 dni: na desktopie przypięta oś przewijana w poziomie; na telefonie linia rośnie w pionie.
   const track = $('#track'), wrap = $('.proc__wrap'), days = $$('.day');

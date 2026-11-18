@@ -470,3 +470,13 @@ fieldset:disabled .opt{cursor:not-allowed}
 /* Runda 5 — hero 3D: do czasu wczytania sceny plakat przygaszony (studio jeszcze bez świateł) */
 .hero__poster{transition:filter .6s var(--ease)}
 .hero-3d-wait .hero__poster{filter:brightness(.4)}
+
+/* Runda 6 — paralaksa: <picture> jest liniowy, więc img nie miał wysokości odniesienia i zostawiał pusty pas */
+.step figure{position:relative}
+.step figure picture{position:absolute;inset:0;display:block}
+.step figure img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.14);will-change:transform}
+/* proporcje ramek zgodne ze zdjęciami — cover tnie tylko zapas na paralaksę */
+.step:nth-child(1) figure{aspect-ratio:2/1}
+.step:nth-child(3) figure{aspect-ratio:16/9}
+/* hero: podtytuł w jednej linii na komputerze */
+@media (min-width:900px){.hero__row .lead{max-width:none;white-space:nowrap}}

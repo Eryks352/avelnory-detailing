@@ -89,14 +89,16 @@ export function createHero(canvas, opts = {}) {
   geo.computeVertexNormals();
 
   const u = { intro: opts.intro ?? 0, scroll: 0, defect: opts.defect ?? 0, wipe: opts.defect ? -0.2 : 1.3, lampOn: 0, drops: 1 };
-  const shaderU = { uWipe: { value: u.wipe }, uDefect: { value: u.defect }, uRes: { value: new THREE.Vector2(1, 1) } };
+  const shaderU = { uWipe: { value: u.wipe }, uDefect: { value: u.defect }, uRes: { value: new THREE.Vector2(1, 1) }, uBar: { value: 99 }, uBarOn: { value: 0 } };
   const paint = new THREE.MeshPhysicalMaterial({
     color: 0x050608, metalness: 0.2, roughness: 0.42, normalMap: flakes, normalScale: new THREE.Vector2(0.45, 0.45),
     clearcoat: 1, clearcoatRoughness: 0.035, envMapIntensity: 1
   });
   paint.onBeforeCompile = sh => {
     Object.assign(sh.uniforms, shaderU);
-    sh.fragmentShader = 'uniform float uWipe, uDefect; uniform vec2 uRes;\n' + sh.fragmentShader
+    sh.vertexShader = 'varying vec3 vWP; varying vec3 vWN;\n' + sh.vertexShader
+      .replace('#include <project_vertex>', '#include <project_vertex>\n  vWP = (modelMatrix * vec4(transformed, 1.0)).xyz; vWN = normalize(mat3(modelMatrix) * objectNormal);');
+    sh.fragmentShader = 'uniform float uWipe, uDefect, uBar, uBarOn; uniform vec2 uRes; varying vec3 vWP; varying vec3 vWN;\n' + sh.fragmentShader
       .replace('#include <lights_physical_fragment>', `#include <lights_physical_fragment>
   float wipeS = gl_FragCoord.x / uRes.x + (gl_FragCoord.y / uRes.y - 0.5) * 0.2;
   float dull = uDefect * smoothstep(uWipe - 0.01, uWipe + 0.09, wipeS);
@@ -105,7 +107,22 @@ export function createHero(canvas, opts = {}) {
   #ifdef USE_CLEARCOAT
   material.clearcoatRoughness = mix(material.clearcoatRoughness, 0.2, dull);
   #endif`)
-      .replace('#include <opaque_fragment>', `outgoingLight = mix(outgoingLight, outgoingLight * 0.8 + vec3(0.006, 0.0065, 0.008), dull);
+      .replace('#include <opaque_fragment>', `
+  /* belka światła przelatuje pod sufitem studia; jej odbicie przesuwa się po lakierze (analitycznie, bez nowej mapy otoczenia) */
+  if (uBarOn > 0.001) {
+    vec3 vd = normalize(vWP - cameraPosition);
+    vec3 rw = reflect(vd, normalize(vWN));
+    if (rw.y > 0.02) {
+      float tc = (2.7 - vWP.y) / rw.y;
+      vec2 pc = vWP.xz + rw.xz * tc;
+      float wb = 0.11 + dull * 0.6 + tc * 0.006;
+      float d = (pc.y - uBar) / wb;
+      float fr = 0.04 + 0.96 * pow(1.0 - clamp(dot(-vd, normalize(vWN)), 0.0, 1.0), 5.0);
+      float bar = exp(-d * d) * smoothstep(3.6, 2.6, abs(pc.x - 1.2)) * fr * (1.0 - dull * 0.7);
+      outgoingLight += vec3(1.0, 0.97, 0.92) * min(bar * 42.0, 2.2) * uBarOn;
+    }
+  }
+  outgoingLight = mix(outgoingLight, outgoingLight * 0.8 + vec3(0.006, 0.0065, 0.008), dull);
   outgoingLight += vec3(0.75, 0.8, 0.88) * exp(-abs(wipeS - uWipe - 0.04) * 55.) * 0.03 * uDefect;
   #include <opaque_fragment>`);
   };
@@ -113,13 +130,28 @@ export function createHero(canvas, opts = {}) {
   hood.position.z = 0; scene.add(hood);
 
   /* --- krople na ceramice: płaskie soczewki, pojawiają się za polerką --- */
-  const dropN = mobile ? 110 : 220;
+  const runN = mobile ? 10 : 22, dropN = (mobile ? 110 : 220) + runN;
   const drops = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2),
     new THREE.MeshPhysicalMaterial({ color: 0x020203, roughness: 0.03, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.02, envMapIntensity: 1.5 }), dropN);
   const dropData = [];
-  for (let i = 0; i < dropN; i++) {
+  for (let i = 0; i < dropN - runN; i++) {
     const x = (Math.random() * 2 - 1) * 1.0, z = -1.9 + Math.random() * 2.75, r = 0.006 + Math.random() ** 2 * 0.016;
     dropData.push([x, z, r]);
+  }
+  // krople na krawędzi maski: grawitacja ściąga je po zboczu na błotnik, potem wracają na górę
+  const runners = Array.from({ length: runN }, (_, i) => ({ side: i % 2 ? 1 : -1, z: -1.7 + Math.random() * 2.4, x: 0.9 + Math.random() * 0.12, v: 0, r: 0.012 + Math.random() * 0.01, wait: Math.random() * 6 }));
+  let lastT = 0; const UP = new THREE.Vector3(0, 1, 0);
+  function moveRunners(t, k) {
+    const dt = Math.min(0.05, Math.max(0, t - lastT)); lastT = t;
+    runners.forEach((d, i) => {
+      if (d.wait > 0) d.wait -= dt;
+      else { const slope = Math.max(0.05, (H(d.x, d.z) - H(d.x + 0.01, d.z)) / 0.01); d.v = Math.min(0.9, d.v + slope * 0.9 * dt); d.x += d.v * dt; }
+      if (d.x > 1.75) { d.x = 0.9 + Math.random() * 0.12; d.z = -1.7 + Math.random() * 2.4; d.v = 0; d.wait = 1 + Math.random() * 5; }
+      const x = d.x * d.side, y = H(x, d.z), stretch = 1 + Math.min(1.4, d.v * 3), s = k;
+      m4.compose(v3.set(x, y - d.r * 0.08, d.z), q4.setFromUnitVectors(UP, nrm.set(-(H(x + 0.004, d.z) - H(x - 0.004, d.z)) / 0.008, 1, -(H(x, d.z + 0.004) - H(x, d.z - 0.004)) / 0.008).normalize()), s3.set(d.r * stretch * s + 1e-5, d.r * 0.42 * s + 1e-5, d.r * s / Math.sqrt(stretch) + 1e-5));
+      drops.setMatrixAt(dropN - runN + i, m4);
+    });
+    drops.instanceMatrix.needsUpdate = true;
   }
   let dropK = -1;
   function placeDrops(k) {
@@ -129,6 +161,7 @@ export function createHero(canvas, opts = {}) {
       m4.compose(v3.set(x, H(x, z) - r * 0.08, z), q4.identity(), s3.set(r * s + 1e-5, r * 0.42 * s + 1e-5, r * s + 1e-5));
       drops.setMatrixAt(i, m4);
     });
+    if (still) runners.forEach((d, i) => { m4.compose(v3.set(0, -9, 0), q4.identity(), s3.set(1e-5, 1e-5, 1e-5)); drops.setMatrixAt(dropN - runN + i, m4); });
     drops.instanceMatrix.needsUpdate = true;
   }
   scene.add(drops);
@@ -181,9 +214,9 @@ export function createHero(canvas, opts = {}) {
     const s = u.scroll, ease = 1 - Math.pow(1 - Math.min(1, u.intro), 3);
     const portrait = w < h;
     // kamera: wjazd przy starcie, powolne okrążanie, przy przewijaniu schodzi nisko nad lakier
-    const az = D((portrait ? 26 : 34) + 16 * (1 - ease) - 20 * s + Math.sin(t * 0.11) * 6 + mouse[0] * 5);
-    const el = D((portrait ? 30 : 23) + 6 * (1 - ease) - 15 * s + mouse[1] * 2);
-    const rad = (portrait ? 4.4 : 4.3) + 0.9 * (1 - ease) - 1.1 * s;
+    const az = D((portrait ? 26 : 34) + 16 * (1 - ease) - 20 * s + Math.sin(t * 0.21) * 13 + mouse[0] * 5);
+    const el = D((portrait ? 30 : 23) + 6 * (1 - ease) - 15 * s + Math.sin(t * 0.13 + 1) * 2.5 + mouse[1] * 2);
+    const rad = (portrait ? 4.4 : 4.3) + 0.9 * (1 - ease) - 1.1 * s + Math.sin(t * 0.17) * 0.15;
     target.set(0, -0.12, -0.35 + 0.4 * s);
     camera.position.set(target.x + rad * Math.cos(el) * Math.sin(az), target.y + rad * Math.sin(el), target.z + rad * Math.cos(el) * Math.cos(az));
     camera.lookAt(target);
@@ -192,7 +225,13 @@ export function createHero(canvas, opts = {}) {
     const on = u.intro < 0.12 ? (Math.random() > 0.55 ? 0.5 : 0.08) * u.intro / 0.12 : Math.min(1, u.intro * 1.15);
     scene.environmentIntensity = on;
     shaderU.uWipe.value = u.wipe; shaderU.uDefect.value = u.defect;
-    placeDrops(u.defect > 0.001 ? Math.max(0, (u.wipe - 0.6) / 0.7) : 1);
+    const dk = u.defect > 0.001 ? Math.max(0, (u.wipe - 0.6) / 0.7) : 1;
+    placeDrops(dk);
+    if (!still) moveRunners(t, Math.min(1, dk));
+    // belka: przelot od nosa do tyłu w 2,6 s, potem 1,6 s przerwy; startuje po polerce
+    const cyc = 4.2, ph = (t % cyc) / 2.6;
+    shaderU.uBar.value = ph < 1 ? 2.0 - 12.0 * (ph * ph * (3 - 2 * ph)) : 99;
+    shaderU.uBarOn.value = still ? 0 : u.lampOn;
     // lampa: promień z kamery przez punkt ekranu, trafienie w maskę, światło nad punktem odbicia
     lamp.intensity = 0;
     if (u.lampOn > 0.001) {
